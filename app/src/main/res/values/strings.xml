@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ShoppingPlus</string>
+    <string name="username">Uporabniško ime</string>
+    <string name="password">Geslo</string>
+    <string name="repeat_password">Potrdi geslo</string>
+    <string name="create_account">Naredi račun</string>
 </resources>
