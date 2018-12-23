@@ -7,8 +7,8 @@
     tools:context=".RegisterActivity">
 
     <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="357dp"
+        android:id="@+id/etUsernameReg"
+        android:layout_width="379dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
@@ -20,13 +20,13 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <EditText
-        android:id="@+id/etPasswordRepeat"
-        android:layout_width="356dp"
+        android:id="@+id/etPasswordRepeatReg"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="138dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginTop="137dp"
+        android:layout_marginEnd="19dp"
         android:ems="10"
         android:hint="@string/repeat_password"
         android:inputType="textPassword"
@@ -34,13 +34,13 @@
         tools:layout_editor_absoluteY="79dp" />
 
     <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="356dp"
+        android:id="@+id/etPasswordReg"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etUsername"
+        android:layout_below="@+id/etUsernameReg"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="19dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -48,12 +48,12 @@
         tools:layout_editor_absoluteY="135dp" />
 
     <Button
-        android:id="@+id/btnCreateAccount"
-        android:layout_width="355dp"
+        android:id="@+id/btnCreateAccountReg"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/etPasswordRepeat"
+        android:layout_alignStart="@+id/etPasswordRepeatReg"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="-1dp"
         android:layout_marginTop="204dp"
         android:text="@string/create_account" />
 

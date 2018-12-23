@@ -4,4 +4,6 @@
     <string name="password">Geslo</string>
     <string name="repeat_password">Potrdi geslo</string>
     <string name="create_account">Naredi račun</string>
+    <string name="login">Prijava</string>
+    <string name="welcome">Dobrodošli</string>
 </resources>

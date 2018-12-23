@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1010168867985",
+    "firebase_url": "https://shoppingplus-5a575.firebaseio.com",
+    "project_id": "shoppingplus-5a575",
+    "storage_bucket": "shoppingplus-5a575.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010168867985:android:730c99f31a766984",
+        "android_client_info": {
+          "package_name": "com.shoppingplus.shoppingplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010168867985-97o1gkbf3jl4a29ki43tohe7mhs56s4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu6kJdzqV6P-W5mcoth1lEMwYKDnUKStQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
