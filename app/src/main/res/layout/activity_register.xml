@@ -4,43 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:orientation="vertical">
 
     <EditText
-        android:id="@+id/etUsernameReg"
+        android:id="@+id/etEmailReg"
         android:layout_width="379dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="178dp"
         android:ems="10"
-        android:hint="@string/username"
+        android:hint="@string/email"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="16dp" />
 
     <EditText
-        android:id="@+id/etPasswordRepeatReg"
-        android:layout_width="379dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="137dp"
-        android:layout_marginEnd="19dp"
-        android:ems="10"
-        android:hint="@string/repeat_password"
-        android:inputType="textPassword"
-        tools:layout_editor_absoluteX="12dp"
-        tools:layout_editor_absoluteY="79dp" />
-
-    <EditText
         android:id="@+id/etPasswordReg"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etUsernameReg"
+        android:layout_below="@+id/etEmailReg"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -51,10 +38,10 @@
         android:id="@+id/btnCreateAccountReg"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/etPasswordRepeatReg"
+        android:layout_alignStart="@+id/etEmailReg"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="303dp"
         android:text="@string/create_account" />
 
 </RelativeLayout>

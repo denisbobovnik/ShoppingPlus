@@ -28,6 +28,8 @@ dependencies {
 
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
     //fajn, da ostali v svojem okolju tudi to dodajo!
 }
 apply plugin: 'com.google.gms.google-services'

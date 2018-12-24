@@ -1,9 +1,16 @@
 <resources>
     <string name="app_name">ShoppingPlus</string>
-    <string name="username">Uporabniško ime</string>
+    <string name="email">Email</string>
     <string name="password">Geslo</string>
     <string name="repeat_password">Potrdi geslo</string>
     <string name="create_account">Naredi račun</string>
     <string name="login">Prijava</string>
     <string name="welcome">Dobrodošli</string>
+    <string name="registrationFailed">Registracija neuspešna! Prosim, poskusite ponovno.</string>
+    <string name="registrationSuccess">Registracija uspešna!</string>
+    <string name="registering">Registriram uporabnika...</string>
+    <string name="passwordRequired">Geslo je obvezno!</string>
+    <string name="emailRequired">Email je obvezen!</string>
+    <string name="emailInvalid">Neveljaven email!</string>
+    <string name="passwordInvalid">Geslo mora imeti 6 znakov!</string>
 </resources>
