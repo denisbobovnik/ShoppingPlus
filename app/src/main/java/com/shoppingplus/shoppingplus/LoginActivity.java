@@ -27,6 +27,15 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if(firebaseAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, KarticeActivity.class));
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -44,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         tvCreateAccLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
             }
@@ -92,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
+                    finish();
                     progressDialog.hide();
                     etEmailLog.setText("");
                     etPasswordLog.setText("");

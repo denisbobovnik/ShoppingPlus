@@ -1,6 +1,7 @@
 package com.shoppingplus.shoppingplus;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -83,6 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.hide();
                     etEmailReg.setText("");
                     etPasswordReg.setText("");
+                    finish();
+                    startActivity(new Intent(RegisterActivity.this, KarticeActivity.class));
                     Toast.makeText(RegisterActivity.this, getResources().getString(R.string.registrationSuccess), Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog.hide();

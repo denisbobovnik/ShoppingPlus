@@ -17,4 +17,6 @@
     <string name="loggingIn">Prijavljam uporabnika...</string>
     <string name="loginSuccess">Prijava uspešna!</string>
     <string name="loginFailed">Prijava neuspešna! Prosim, poskusite ponovno.</string>
+    <string name="logout">Odjava</string>
+    <string name="editProfile">Uredi profil</string>
 </resources>

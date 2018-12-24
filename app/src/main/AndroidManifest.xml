@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".KarticeActivity"></activity>
+        <activity android:name=".KarticeActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
