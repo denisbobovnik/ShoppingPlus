@@ -13,4 +13,8 @@
     <string name="emailRequired">Email je obvezen!</string>
     <string name="emailInvalid">Neveljaven email!</string>
     <string name="passwordInvalid">Geslo mora imeti 6 znakov!</string>
+    <string name="userExists">Uporabnik s tem emailom že obstaja!</string>
+    <string name="loggingIn">Prijavljam uporabnika...</string>
+    <string name="loginSuccess">Prijava uspešna!</string>
+    <string name="loginFailed">Prijava neuspešna! Prosim, poskusite ponovno.</string>
 </resources>

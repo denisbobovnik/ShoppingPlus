@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,8 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setMessage(getResources().getString(R.string.registering));
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
@@ -88,7 +88,11 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.hide();
                     etEmailReg.setText("");
                     etPasswordReg.setText("");
-                    Toast.makeText(RegisterActivity.this, getResources().getString(R.string.registrationFailed), Toast.LENGTH_SHORT).show();
+                    if(task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        Toast.makeText(RegisterActivity.this, getResources().getString(R.string.userExists), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, getResources().getString(R.string.registrationFailed), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
