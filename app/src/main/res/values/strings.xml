@@ -30,4 +30,14 @@
     <string name="emailSuccess">Email poslan!</string>
     <string name="userDoesntExist">Uporabnik s tem emailom ne obstaja!</string>
     <string name="emailFailed">Emaila ni bilo možno poslati!</string>
+    <string name="deleteAccount">Izbriši račun</string>
+    <string name="youSure">Ste prepričani?</string>
+    <string name="deleteMessage">Brisanje računa bo popolnoma odstranilo račun iz sistema in vam onemogočilo ponovni vstop v aplikacijo.</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="delete">Izbriši</string>
+    <string name="cancel">Prekliči</string>
+    <string name="deleteSuccess">Račun izbrisan!</string>
+    <string name="deleteFailed">Računa ni bilo mogoče izbrisati!</string>
+    <string name="deletingAccount">Brisanje računa...</string>
 </resources>

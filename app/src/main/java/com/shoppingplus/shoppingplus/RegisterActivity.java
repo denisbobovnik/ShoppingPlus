@@ -85,6 +85,10 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.hide();
                     etEmailReg.setText("");
                     etPasswordReg.setText("");
+
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    user.sendEmailVerification();
+
                     finish();
                     startActivity(new Intent(RegisterActivity.this, KarticeActivity.class));
                     Toast.makeText(RegisterActivity.this, getResources().getString(R.string.registrationSuccess), Toast.LENGTH_SHORT).show();

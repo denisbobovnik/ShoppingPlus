@@ -14,7 +14,6 @@ public class KarticeActivity extends AppCompatActivity {
 
     private TextView tvCreateAccLog;
     private TextView tvEmailKartice;
-    private EditText etEmailKartice;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -35,8 +34,6 @@ public class KarticeActivity extends AppCompatActivity {
 
         tvCreateAccLog = (TextView) findViewById(R.id.tvCreateAccLog);
         tvEmailKartice = (TextView) findViewById(R.id.tvEmailKartice);
-
-        etEmailKartice = (EditText) findViewById(R.id.etEmailKartice);
 
 
 

@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.ProviderQueryResult;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -52,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         tvCreateAccLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
             }
@@ -77,8 +78,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void userLogin() {
-        String email = etEmailLog.getText().toString().trim();
-        String password = etPasswordLog.getText().toString().trim();
+        final String email = etEmailLog.getText().toString().trim();
+        final String password = etPasswordLog.getText().toString().trim();
 
         if(email.isEmpty()) {
             etEmailLog.setError(getResources().getString(R.string.emailRequired));
@@ -123,7 +124,17 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.hide();
                     etEmailLog.setText("");
                     etPasswordLog.setText("");
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.loginFailed), Toast.LENGTH_SHORT).show();
+                    firebaseAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                            boolean check = !task.getResult().getProviders().isEmpty();
+                            if(!check) {
+                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.userDoesntExist), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.loginFailed), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
         });
