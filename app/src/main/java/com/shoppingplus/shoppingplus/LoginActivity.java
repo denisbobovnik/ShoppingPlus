@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvCreateAccLog;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private TextView tvForgotPassword;
 
     @Override
     protected void onStart() {
@@ -47,9 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         etEmailLog = (EditText) findViewById(R.id.etEmailLog);
         etPasswordLog = (EditText) findViewById(R.id.etPasswordLog);
 
-        btnLoginLog = (Button) findViewById(R.id.btnLoginLog);
         tvCreateAccLog = (TextView) findViewById(R.id.tvCreateAccLog);
-
         tvCreateAccLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +58,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        tvForgotPassword = (TextView) findViewById(R.id.tvForgotPassword);
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent forgotIntent = new Intent(LoginActivity.this, ForgotActivity.class);
+                LoginActivity.this.startActivity(forgotIntent);
+            }
+        });
+
+        btnLoginLog = (Button) findViewById(R.id.btnLoginLog);
         btnLoginLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

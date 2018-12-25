@@ -23,4 +23,11 @@
     <string name="emailNotVerified">Email ni potrjen! (Kliknite za potrditev - ponovna prijava spremeni status)</string>
     <string name="verEmailSent">Na email boste prejeli potrditveno povezavo.</string>
     <string name="alreadyHere">Se že nahajate v izbranem meniju!</string>
+    <string name="forgotPassword">Pozabljeno geslo</string>
+    <string name="forgotDetails">Vnesite email, vezan na pozabljen račun, in posredovali vam bomo navodila za ponastavitev gesla.</string>
+    <string name="sendEmailForgot">Pošlji email</string>
+    <string name="sendingEmail">Pošiljam email...</string>
+    <string name="emailSuccess">Email poslan!</string>
+    <string name="userDoesntExist">Uporabnik s tem emailom ne obstaja!</string>
+    <string name="emailFailed">Emaila ni bilo možno poslati!</string>
 </resources>

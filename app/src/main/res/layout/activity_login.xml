@@ -17,7 +17,7 @@
         android:layout_marginTop="179dp"
         android:ems="10"
         android:hint="@string/email"
-        android:inputType="textPersonName" />
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/etPasswordLog"
@@ -51,6 +51,16 @@
         android:layout_marginTop="354dp"
         android:text="@string/create_account"
         android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="29dp"
+        android:text="@string/forgotPassword"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </RelativeLayout>
