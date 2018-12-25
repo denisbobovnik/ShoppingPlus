@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -25,6 +28,12 @@ public class ProfileActivity extends AppCompatActivity {
     private Button btnDeleteAccount;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private Button btnChangeEmail;
+    private Button btnChangePassword;
+    private TextView emailValue;
+    private EditText passwordOldValue;
+    private EditText passwordNewValue;
+    private EditText passwordNewValueRepeat;
 
     @Override
     protected void onStart() {
@@ -70,6 +79,86 @@ public class ProfileActivity extends AppCompatActivity {
                 deleteAccount();
             }
         });
+
+        btnChangeEmail = (Button) findViewById(R.id.btnChangeEmail);
+        btnChangeEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeEmail();
+            }
+        });
+
+        btnChangePassword = (Button) findViewById(R.id.btnChangePassword);
+        btnChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePassword();
+            }
+        });
+
+        passwordOldValue = (EditText) findViewById(R.id.passwordOldValue);
+        passwordNewValue = (EditText) findViewById(R.id.passwordNewValue);
+        passwordNewValueRepeat = (EditText) findViewById(R.id.passwordNewValueRepeat);
+
+
+        emailValue = (TextView) findViewById(R.id.emailValue);
+        emailValue.setText(user.getEmail());
+    }
+
+    private void changeEmail() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String email = emailValue.getText().toString().trim();
+
+        if(email.isEmpty()) {
+            emailValue.setError(getResources().getString(R.string.emailRequired));
+            emailValue.requestFocus();
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailValue.setError(getResources().getString(R.string.emailInvalid));
+            emailValue.requestFocus();
+            return;
+        }
+
+        if(email.equals(user.getEmail())) {
+            emailValue.setError(getResources().getString(R.string.emailIsSame));
+            emailValue.requestFocus();
+            return;
+        }
+
+        firebaseAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                boolean check = !task.getResult().getProviders().isEmpty();
+                if(check) {
+                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.userExists), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
+
+        progressDialog.setMessage(getResources().getString(R.string.changingEmail));
+        progressDialog.show();
+
+        user.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                progressDialog.hide();
+                if(task.isSuccessful()) {
+                    tvVerified.setText(getResources().getString(R.string.emailNotVerified));
+                    user.sendEmailVerification();
+                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changeEmailSuccess), Toast.LENGTH_SHORT).show();
+                } else {
+                    emailValue.setText(user.getEmail()); //če ni šlo, povrne vrednost v edittext
+                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changeEmailFailed), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void changePassword() {
+
     }
 
     private void deleteAccount() {

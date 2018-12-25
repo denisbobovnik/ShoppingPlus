@@ -27,6 +27,15 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if(firebaseAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, KarticeActivity.class));
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);

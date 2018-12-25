@@ -20,8 +20,8 @@
     <string name="logout">Odjava</string>
     <string name="editProfile">Uredi profil</string>
     <string name="emailVerified">Email potrjen.</string>
-    <string name="emailNotVerified">Email ni potrjen! (Kliknite za potrditev - ponovna prijava spremeni status)</string>
-    <string name="verEmailSent">Na email boste prejeli potrditveno povezavo.</string>
+    <string name="emailNotVerified">Email ni potrjen! (Klik)</string>
+    <string name="verEmailSent">Na email boste prejeli potrditveno povezavo. (Potreben je ponovni vpis za uveljavitev sprememb)</string>
     <string name="alreadyHere">Se že nahajate v izbranem meniju!</string>
     <string name="forgotPassword">Pozabljeno geslo</string>
     <string name="forgotDetails">Vnesite email, vezan na pozabljen račun, in posredovali vam bomo navodila za ponastavitev gesla.</string>
@@ -37,7 +37,20 @@
     <string name="no">Ne</string>
     <string name="delete">Izbriši</string>
     <string name="cancel">Prekliči</string>
+    <string name="change">Spremeni</string>
     <string name="deleteSuccess">Račun izbrisan!</string>
     <string name="deleteFailed">Računa ni bilo mogoče izbrisati!</string>
     <string name="deletingAccount">Brisanje računa...</string>
+    <string name="emailStatus">Status emaila: </string>
+    <string name="changeEmail">Spremeni email</string>
+    <string name="changePassword">Spremeni geslo</string>
+    <string name="email_podpicje">Email:</string>
+    <string name="changeEmailSuccess">Email uspešno spremenjen.</string>
+    <string name="changeEmailFailed">Email ni spremenjen.</string>
+    <string name="ok">OK</string>
+    <string name="newPassword">Novo geslo</string>
+    <string name="newPasswordRepeat">Ponovitev novega gesla</string>
+    <string name="oldPassword">Staro geslo</string>
+    <string name="emailIsSame">Email je enak!</string>
+    <string name="changingEmail">Spreminjam email...</string>
 </resources>
