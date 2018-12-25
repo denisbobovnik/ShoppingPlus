@@ -19,4 +19,8 @@
     <string name="loginFailed">Prijava neuspešna! Prosim, poskusite ponovno.</string>
     <string name="logout">Odjava</string>
     <string name="editProfile">Uredi profil</string>
+    <string name="emailVerified">Email potrjen.</string>
+    <string name="emailNotVerified">Email ni potrjen! (Kliknite za potrditev - ponovna prijava spremeni status)</string>
+    <string name="verEmailSent">Na email boste prejeli potrditveno povezavo.</string>
+    <string name="alreadyHere">Se že nahajate v izbranem meniju!</string>
 </resources>

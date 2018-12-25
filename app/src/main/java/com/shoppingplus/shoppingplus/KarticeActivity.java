@@ -31,6 +31,8 @@ public class KarticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kartice);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         tvCreateAccLog = (TextView) findViewById(R.id.tvCreateAccLog);
         tvEmailKartice = (TextView) findViewById(R.id.tvEmailKartice);
 
@@ -40,6 +42,7 @@ public class KarticeActivity extends AppCompatActivity {
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -52,7 +55,9 @@ public class KarticeActivity extends AppCompatActivity {
             Intent intent = new Intent(KarticeActivity.this, ProfileActivity.class);
             startActivity(intent);
         } else { //logout
-
+            firebaseAuth.signOut();
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

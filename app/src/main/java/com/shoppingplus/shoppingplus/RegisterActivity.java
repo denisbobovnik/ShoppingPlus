@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -87,6 +88,15 @@ public class RegisterActivity extends AppCompatActivity {
                     finish();
                     startActivity(new Intent(RegisterActivity.this, KarticeActivity.class));
                     Toast.makeText(RegisterActivity.this, getResources().getString(R.string.registrationSuccess), Toast.LENGTH_SHORT).show();
+                    final FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if(!user.isEmailVerified()) {
+                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(RegisterActivity.this, getResources().getString(R.string.verEmailSent), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 } else {
                     progressDialog.hide();
                     etEmailReg.setText("");
