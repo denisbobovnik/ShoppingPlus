@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1010168867985-b1n3rps4ci05udg4gqe38rnfjhkd6pb9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shoppingplus.shoppingplus",
+            "certificate_hash": "5eb3530928f5a43385e38bc2e6eb1eb12b689fbb"
+          }
+        },
+        {
           "client_id": "1010168867985-97o1gkbf3jl4a29ki43tohe7mhs56s4a.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010168867985-97o1gkbf3jl4a29ki43tohe7mhs56s4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

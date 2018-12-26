@@ -25,14 +25,13 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnCreateAccountReg;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private EditText etPasswordRepeatReg;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(firebaseAuth.getCurrentUser() != null) {
-            finish();
-            startActivity(new Intent(this, KarticeActivity.class));
-        }
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
@@ -44,8 +43,19 @@ public class RegisterActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null) {
+                    finish();
+                    startActivity(new Intent(RegisterActivity.this, KarticeActivity.class));
+                }
+            }
+        };
+
         etEmailReg = (EditText) findViewById(R.id.etEmailReg);
         etPasswordReg = (EditText) findViewById(R.id.etPasswordReg);
+        etPasswordRepeatReg = (EditText) findViewById(R.id.etPasswordRepeatReg);
 
         btnCreateAccountReg = (Button) findViewById(R.id.btnCreateAccountReg);
         btnCreateAccountReg.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser() {
         String email = etEmailReg.getText().toString().trim();
         String password = etPasswordReg.getText().toString().trim();
+        String passwordNewRepeat = etPasswordRepeatReg.getText().toString().trim();
 
         if(email.isEmpty()) {
             etEmailReg.setError(getResources().getString(R.string.emailRequired));
@@ -78,9 +89,28 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if(passwordNewRepeat.isEmpty()) {
+            etPasswordRepeatReg.setError(getResources().getString(R.string.passwordRequired));
+            etPasswordRepeatReg.requestFocus();
+            return;
+        }
+
         if(password.length()<6) {
             etPasswordReg.setError(getResources().getString(R.string.passwordInvalid));
             etPasswordReg.requestFocus();
+            return;
+        }
+
+
+        if(passwordNewRepeat.length()<6) {
+            etPasswordRepeatReg.setError(getResources().getString(R.string.passwordInvalid));
+            etPasswordRepeatReg.requestFocus();
+            return;
+        }
+
+        if(!password.equals(passwordNewRepeat)) {
+            etPasswordRepeatReg.setError(getResources().getString(R.string.passwordMissmatch));
+            etPasswordRepeatReg.requestFocus();
             return;
         }
 
@@ -94,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.hide();
                     etEmailReg.setText("");
                     etPasswordReg.setText("");
-
+                    etPasswordRepeatReg.setText("");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     user.sendEmailVerification();
 
@@ -105,6 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.hide();
                     etEmailReg.setText("");
                     etPasswordReg.setText("");
+                    etPasswordRepeatReg.setText("");
                     if(task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Toast.makeText(RegisterActivity.this, getResources().getString(R.string.userExists), Toast.LENGTH_SHORT).show();
                     } else {

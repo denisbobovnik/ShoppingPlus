@@ -58,4 +58,11 @@
     <string name="changePasswordSuccess">Geslo uspešno spremenjeno.</string>
     <string name="changePasswordFailed">Geslo ni spremenjeno.</string>
     <string name="loginRequired">Zahtevana je ponovna prijava!</string>
+    <string name="repeatPassword">Ponovitev gesla</string>
+    <string name="googleSignInError">Napaka pri prijavi z Google.</string>
+    <string name="googleAuthError">Napaka pri avtentikaciji.</string>
+    <string name="disabledAccountType">Onemogočeno zaradi tipa računa.</string>
+    <string name="facebook_app_id">378105732937439</string>
+    <string name="fb_login_protocol_scheme">fb378105732937439</string>
+    <string name="loginCancelled">Prijava prekinjena.</string>
 </resources>

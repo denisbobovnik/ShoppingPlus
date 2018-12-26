@@ -25,14 +25,12 @@ public class ForgotActivity extends AppCompatActivity {
     private Button btnSendEmailForgot;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(firebaseAuth.getCurrentUser() != null) {
-            finish();
-            startActivity(new Intent(this, KarticeActivity.class));
-        }
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
@@ -43,6 +41,16 @@ public class ForgotActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null) {
+                    finish();
+                    startActivity(new Intent(ForgotActivity.this, KarticeActivity.class));
+                }
+            }
+        };
 
         tvDetailsForgot = (TextView) findViewById(R.id.tvDetailsForgot);
         etEmailForgot = (EditText) findViewById(R.id.etEmailForgot);

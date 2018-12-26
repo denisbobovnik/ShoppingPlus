@@ -33,12 +33,18 @@
             android:id="@+id/etPasswordReg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="135dp" />
+
+        <EditText
+            android:id="@+id/etPasswordRepeatReg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/repeatPassword"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btnCreateAccountReg"

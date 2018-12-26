@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.auth.UserInfo;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -35,14 +36,12 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView emailValue;
     private EditText passwordNewValue;
     private EditText passwordNewValueRepeat;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(firebaseAuth.getCurrentUser() == null) {
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
@@ -53,6 +52,16 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(this);
+
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null) {
+                    finish();
+                    startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                }
+            }
+        };
 
         tvVerified = (TextView) findViewById(R.id.tvVerified);
         final FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -103,6 +112,17 @@ public class ProfileActivity extends AppCompatActivity {
 
         emailValue = (TextView) findViewById(R.id.emailValue);
         emailValue.setText(user.getEmail());
+        for(UserInfo userInfo : firebaseAuth.getCurrentUser().getProviderData()) {
+            if((userInfo.getProviderId().equals("facebook.com"))||(userInfo.getProviderId().equals("google.com"))) {
+                emailValue.setText(getResources().getString(R.string.disabledAccountType));
+                emailValue.setFocusable(false);
+                btnChangeEmail.setClickable(false);
+                tvVerified.setClickable(false);
+                passwordNewValue.setFocusable(false);
+                passwordNewValueRepeat.setFocusable(false);
+                btnChangePassword.setClickable(false);
+            }
+        }
     }
 
     private void changeEmail() {
@@ -281,8 +301,6 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(ProfileActivity.this, getResources().getString(R.string.alreadyHere), Toast.LENGTH_SHORT).show();
         } else { //logout
             firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

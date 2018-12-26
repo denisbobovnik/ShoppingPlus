@@ -1,28 +1,30 @@
 package com.shoppingplus.shoppingplus;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 
 public class KarticeActivity extends AppCompatActivity {
 
     private TextView tvCreateAccLog;
     private TextView tvEmailKartice;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(firebaseAuth.getCurrentUser() == null) {
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+        firebaseAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
@@ -35,7 +37,15 @@ public class KarticeActivity extends AppCompatActivity {
         tvCreateAccLog = (TextView) findViewById(R.id.tvCreateAccLog);
         tvEmailKartice = (TextView) findViewById(R.id.tvEmailKartice);
 
-
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null) {
+                    finish();
+                    startActivity(new Intent(KarticeActivity.this, LoginActivity.class));
+                }
+            }
+        };
 
 
     }
@@ -53,8 +63,6 @@ public class KarticeActivity extends AppCompatActivity {
             startActivity(intent);
         } else { //logout
             firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
