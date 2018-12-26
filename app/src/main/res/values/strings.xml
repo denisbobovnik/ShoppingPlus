@@ -53,4 +53,9 @@
     <string name="oldPassword">Staro geslo</string>
     <string name="emailIsSame">Email je enak!</string>
     <string name="changingEmail">Spreminjam email...</string>
+    <string name="passwordMissmatch">Gesli se ne ujemata!</string>
+    <string name="changingPassword">Spreminjam geslo...</string>
+    <string name="changePasswordSuccess">Geslo uspešno spremenjeno.</string>
+    <string name="changePasswordFailed">Geslo ni spremenjeno.</string>
+    <string name="loginRequired">Zahtevana je ponovna prijava!</string>
 </resources>

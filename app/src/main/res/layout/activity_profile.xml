@@ -78,14 +78,6 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/passwordOldValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="@string/oldPassword"
-            android:textSize="20sp"/>
-
-        <EditText
             android:id="@+id/passwordNewValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

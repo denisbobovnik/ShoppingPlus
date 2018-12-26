@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 
@@ -31,7 +33,6 @@ public class ProfileActivity extends AppCompatActivity {
     private Button btnChangeEmail;
     private Button btnChangePassword;
     private TextView emailValue;
-    private EditText passwordOldValue;
     private EditText passwordNewValue;
     private EditText passwordNewValueRepeat;
 
@@ -96,7 +97,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        passwordOldValue = (EditText) findViewById(R.id.passwordOldValue);
         passwordNewValue = (EditText) findViewById(R.id.passwordNewValue);
         passwordNewValueRepeat = (EditText) findViewById(R.id.passwordNewValueRepeat);
 
@@ -150,15 +150,78 @@ public class ProfileActivity extends AppCompatActivity {
                     user.sendEmailVerification();
                     Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changeEmailSuccess), Toast.LENGTH_SHORT).show();
                 } else {
-                    emailValue.setText(user.getEmail()); //če ni šlo, povrne vrednost v edittext
-                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changeEmailFailed), Toast.LENGTH_SHORT).show();
+                    if(task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                        Toast.makeText(ProfileActivity.this, getResources().getString(R.string.loginRequired), Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                        finish();
+                        startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                    } else {
+                        emailValue.setText(user.getEmail()); //če ni šlo, povrne vrednost v edittext
+                        Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changeEmailFailed), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
 
     private void changePassword() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String passwordNew = passwordNewValue.getText().toString().trim();
+        final String passwordNewRepeat = passwordNewValueRepeat.getText().toString().trim();
 
+        if(passwordNew.isEmpty()) {
+            passwordNewValue.setError(getResources().getString(R.string.passwordRequired));
+            passwordNewValue.requestFocus();
+            return;
+        }
+
+        if(passwordNewRepeat.isEmpty()) {
+            passwordNewValueRepeat.setError(getResources().getString(R.string.passwordRequired));
+            passwordNewValueRepeat.requestFocus();
+            return;
+        }
+
+        if(passwordNew.length()<6) {
+            passwordNewValue.setError(getResources().getString(R.string.passwordInvalid));
+            passwordNewValue.requestFocus();
+            return;
+        }
+
+        if(passwordNewRepeat.length()<6) {
+            passwordNewValueRepeat.setError(getResources().getString(R.string.passwordInvalid));
+            passwordNewValueRepeat.requestFocus();
+            return;
+        }
+
+        if(!passwordNew.equals(passwordNewRepeat)) {
+            passwordNewValueRepeat.setError(getResources().getString(R.string.passwordMissmatch));
+            passwordNewValueRepeat.requestFocus();
+            return;
+        }
+
+        progressDialog.setMessage(getResources().getString(R.string.changingPassword));
+        progressDialog.show();
+
+        user.updatePassword(passwordNew).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                progressDialog.hide();
+                passwordNewValue.setText("");
+                passwordNewValueRepeat.setText("");
+                if(task.isSuccessful()) {
+                    Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changePasswordSuccess), Toast.LENGTH_SHORT).show();
+                } else {
+                    if(task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                        Toast.makeText(ProfileActivity.this, getResources().getString(R.string.loginRequired), Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                        finish();
+                        startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                    } else {
+                        Toast.makeText(ProfileActivity.this, getResources().getString(R.string.changePasswordFailed), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
     private void deleteAccount() {
@@ -182,7 +245,14 @@ public class ProfileActivity extends AppCompatActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(ProfileActivity.this, getResources().getString(R.string.deleteFailed), Toast.LENGTH_SHORT).show();
+                            if(task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                                Toast.makeText(ProfileActivity.this, getResources().getString(R.string.loginRequired), Toast.LENGTH_SHORT).show();
+                                firebaseAuth.signOut();
+                                finish();
+                                startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                            } else {
+                                Toast.makeText(ProfileActivity.this, getResources().getString(R.string.deleteFailed), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
