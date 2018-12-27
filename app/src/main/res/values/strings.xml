@@ -65,4 +65,6 @@
     <string name="facebook_app_id">378105732937439</string>
     <string name="fb_login_protocol_scheme">fb378105732937439</string>
     <string name="loginCancelled">Prijava prekinjena.</string>
+    <string name="betaWarning">Opozorilo BETA</string>
+    <string name="betaDetails">Funkcija je v stanju beta! Obstajajo znane napake, ki se bodo odpravile v prihodnjih različicah.</string>
 </resources>

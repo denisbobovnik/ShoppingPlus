@@ -1,6 +1,8 @@
 package com.shoppingplus.shoppingplus;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,6 +37,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.ProviderQueryResult;
@@ -93,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
+                nadaljujSOpozorilom(loginResult);
             }
 
             @Override
@@ -144,6 +147,27 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+    }
+
+    private void nadaljujSOpozorilom(final LoginResult loginResult) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+        dialog.setTitle(getResources().getString(R.string.betaWarning));
+        dialog.setMessage(getResources().getString(R.string.betaDetails));
+        dialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+        });
+        dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog ad = dialog.create();
+        ad.show();
     }
 
     //Google prijava
