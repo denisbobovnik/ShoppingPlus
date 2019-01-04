@@ -1,25 +1,26 @@
 package com.shoppingplus.shoppingplus;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.TextView;
 
-import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserInfo;
 
 public class KarticeActivity extends AppCompatActivity {
 
-    private TextView tvCreateAccLog;
-    private TextView tvEmailKartice;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private FloatingActionButton fabDodajKartico;
+    private TextView tvPrebranaKoda;
 
     @Override
     protected void onStart() {
@@ -34,9 +35,6 @@ public class KarticeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        tvCreateAccLog = (TextView) findViewById(R.id.tvCreateAccLog);
-        tvEmailKartice = (TextView) findViewById(R.id.tvEmailKartice);
-
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -47,7 +45,32 @@ public class KarticeActivity extends AppCompatActivity {
             }
         };
 
+        tvPrebranaKoda = (TextView) findViewById(R.id.tvPrebranaKoda);
 
+        fabDodajKartico = findViewById(R.id.fabDodajKartico);
+        fabDodajKartico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(KarticeActivity.this, ScanActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==0) {
+            if(resultCode== CommonStatusCodes.SUCCESS) {
+                if(data != null) {
+                    Barcode barcode = data.getParcelableExtra("crtnaKoda");
+                    tvPrebranaKoda.setText(barcode.displayValue);
+                } else {
+                    tvPrebranaKoda.setText(getResources().getString(R.string.noBarcodeScanned));
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

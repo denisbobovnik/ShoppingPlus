@@ -1,11 +1,15 @@
 package com.shoppingplus.shoppingplus;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
@@ -44,6 +48,7 @@ import com.google.firebase.auth.ProviderQueryResult;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private int CAMERA_PERMISSION_CODE = 200;
     private EditText etEmailLog;
     private EditText etPasswordLog;
     private Button btnLoginLog;
@@ -62,6 +67,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
+
+        if(ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CAMERA_PERMISSION_CODE) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(this, getResources().getString(R.string.cameraPermissionGranted), Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, getResources().getString(R.string.noCameraPermission), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -187,6 +206,8 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
 
+                firebaseAuthWithGoogle(account);
+                /*ZNANA *TEŽAVA*
                 firebaseAuth.fetchProvidersForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
                     @Override
                     public void onComplete(@NonNull Task<ProviderQueryResult> task) {
@@ -198,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+                */
             } catch (ApiException e) {
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.googleAuthError), Toast.LENGTH_SHORT).show();
             }

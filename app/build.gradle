@@ -26,13 +26,15 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.android.volley:volley:1.1.0'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.firebase:firebase-database:16.0.1'
-    implementation 'com.google.firebase:firebase-auth:16.0.1'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.facebook.android:facebook-login:[4,5)'
+    implementation 'com.android.volley:volley:1.1.0' //also needed
+    implementation 'com.google.firebase:firebase-core:16.0.1' //firebase
+    implementation 'com.google.android.gms:play-services-auth:15.0.1' //google authentication
+    implementation 'com.google.firebase:firebase-database:16.0.1' //firebase database
+    implementation 'com.google.firebase:firebase-auth:16.0.1' //firebase authentication
+    implementation 'com.android.support:recyclerview-v7:28.0.0' //recycler view
+    implementation 'com.facebook.android:facebook-login:[4,5)' //fb login
+    implementation 'com.android.support:design:28.0.0' //fab
+    implementation 'com.google.android.gms:play-services-vision:15.0.1' //google vision api
     //fajn, da ostali v svojem okolju tudi to dodajo!
 }
 apply plugin: 'com.google.gms.google-services'
