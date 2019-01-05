@@ -62,7 +62,8 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".ScanActivity"></activity>
+        <activity android:name=".ScanActivity" />
+        <activity android:name=".DopolnitevKarticeActivity"></activity>
     </application>
 
 </manifest>

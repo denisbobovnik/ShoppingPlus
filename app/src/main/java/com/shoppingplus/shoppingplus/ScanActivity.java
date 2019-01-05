@@ -1,26 +1,25 @@
 package com.shoppingplus.shoppingplus;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.io.IOException;
 
 public class ScanActivity extends AppCompatActivity {
@@ -28,6 +27,7 @@ public class ScanActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private SurfaceView svKamera;
+    private Button btnManualEntry;
 
     @Override
     protected void onStart() {
@@ -55,6 +55,13 @@ public class ScanActivity extends AppCompatActivity {
         svKamera = (SurfaceView) findViewById(R.id.svKamera);
         ustvariVirKamere();
 
+        btnManualEntry = (Button) findViewById(R.id.btnManualEntry);
+        btnManualEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void ustvariVirKamere() {
@@ -97,7 +104,7 @@ public class ScanActivity extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> crtneKode = detections.getDetectedItems();
                 if(crtneKode.size()>0) {
-                    Intent intent = new Intent(ScanActivity.this, KarticeActivity.class);
+                    Intent intent = new Intent(ScanActivity.this, DopolnitevKarticeActivity.class);
                     intent.putExtra("crtnaKoda", crtneKode.valueAt(0));
                     setResult(CommonStatusCodes.SUCCESS, intent);
                     finish();

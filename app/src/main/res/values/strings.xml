@@ -70,4 +70,8 @@
     <string name="noCameraPermission">Aplikacija nima dovoljenja za uporabo kamere!</string>
     <string name="noBarcodeScanned">Ni najdene številke kartice!</string>
     <string name="cameraPermissionGranted">Dovoljenje za kamero pridobljeno!</string>
+    <string name="manualEntry">Vnesi ročno</string>
+    <string name="addCard">Dodaj kartico</string>
+    <string name="stevilkaKartice">Številka kartice</string>
+    <string name="imeTrgovine">Ime trgovine</string>
 </resources>
