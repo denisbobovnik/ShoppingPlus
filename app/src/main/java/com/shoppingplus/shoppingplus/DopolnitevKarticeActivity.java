@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -22,6 +23,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity {
     private EditText etStevilkaKartice;
     private EditText etImeTrgovine;
     private Button btnDodajKartico;
+    private ImageView ivNewScan;
 
     @Override
     protected void onStart() {
@@ -57,6 +59,15 @@ public class DopolnitevKarticeActivity extends AppCompatActivity {
             }
         });
 
+        ivNewScan = (ImageView) findViewById(R.id.ivNewScan);
+        ivNewScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DopolnitevKarticeActivity.this, ScanActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
         Intent intent = new Intent(DopolnitevKarticeActivity.this, ScanActivity.class);
         startActivityForResult(intent, 0);
     }
@@ -67,6 +78,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity {
             if(resultCode== CommonStatusCodes.SUCCESS) {
                 if(data != null) {
                     Barcode barcode = data.getParcelableExtra("crtnaKoda");
+                    etStevilkaKartice.setText("");
                     etStevilkaKartice.setText(barcode.displayValue);
                 }
             }
