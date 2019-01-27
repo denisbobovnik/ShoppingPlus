@@ -11,6 +11,8 @@
     <string name="registering">Registriram uporabnika...</string>
     <string name="passwordRequired">Geslo je obvezno!</string>
     <string name="emailRequired">Email je obvezen!</string>
+    <string name="stevilkaKarticeRequired">Številka kartice je obvezna!</string>
+    <string name="imeTrgovineRequired">Ime trgovine je obvezno!</string>
     <string name="emailInvalid">Neveljaven email!</string>
     <string name="passwordInvalid">Geslo mora imeti 6 znakov!</string>
     <string name="userExists">Uporabnik s tem emailom že obstaja!</string>
@@ -21,7 +23,7 @@
     <string name="editProfile">Uredi profil</string>
     <string name="emailVerified">Email potrjen.</string>
     <string name="emailNotVerified">Email ni potrjen! (Klik)</string>
-    <string name="verEmailSent">Na email boste prejeli potrditveno povezavo. (Potreben je ponovni vpis za uveljavitev sprememb)</string>
+    <string name="verEmailSent">Na email boste prejeli potrditveno povezavo.</string>
     <string name="alreadyHere">Se že nahajate v izbranem meniju!</string>
     <string name="forgotPassword">Pozabljeno geslo</string>
     <string name="forgotDetails">Vnesite email, vezan na pozabljen račun, in posredovali vam bomo navodila za ponastavitev gesla.</string>
@@ -74,4 +76,6 @@
     <string name="addCard">Dodaj kartico</string>
     <string name="stevilkaKartice">Številka kartice</string>
     <string name="imeTrgovine">Ime trgovine</string>
+    <string name="cardAdded">Kartica uspešno shranjena!</string>
+    <string name="cardNotAdded">Napaka pri shranjevanju kartice!</string>
 </resources>
