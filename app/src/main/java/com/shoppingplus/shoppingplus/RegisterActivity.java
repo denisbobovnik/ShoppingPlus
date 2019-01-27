@@ -101,7 +101,6 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-
         if(passwordNewRepeat.length()<6) {
             etPasswordRepeatReg.setError(getResources().getString(R.string.passwordInvalid));
             etPasswordRepeatReg.requestFocus();

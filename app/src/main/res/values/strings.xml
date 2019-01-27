@@ -17,8 +17,12 @@
     <string name="passwordInvalid">Geslo mora imeti 6 znakov!</string>
     <string name="userExists">Uporabnik s tem emailom že obstaja!</string>
     <string name="loggingIn">Prijavljam uporabnika...</string>
+    <string name="addingCard">Dodajam kartico...</string>
     <string name="loginSuccess">Prijava uspešna!</string>
     <string name="loginFailed">Prijava neuspešna! Prosim, poskusite ponovno.</string>
+    <string name="photoUploadSuccess">Nalaganje slike kartice uspešno!</string>
+    <string name="photoUploadFailure">Nalaganje slike kartice spodletelo! Prosim, poskusite ponovno.</string>
+    <string name="didntGetURL">Povezave do slike ni bilo moč pridobiti! Prosim, poskusite ponovno.</string>
     <string name="logout">Odjava</string>
     <string name="editProfile">Uredi profil</string>
     <string name="emailVerified">Email potrjen.</string>

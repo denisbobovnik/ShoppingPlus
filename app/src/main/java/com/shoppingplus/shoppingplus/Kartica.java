@@ -6,11 +6,10 @@ public class Kartica {
     private String sifra_kartice;
     private String url_slike;
 
-    public Kartica(String id_uporabnika, String naziv_trgovine, String sifra_kartice, String url_slike) {
+    public Kartica(String id_uporabnika, String naziv_trgovine, String sifra_kartice) {
         this.id_uporabnika = id_uporabnika;
         this.naziv_trgovine = naziv_trgovine;
         this.sifra_kartice = sifra_kartice;
-        this.url_slike = url_slike;
     }
 
     public String getId_uporabnika() {
