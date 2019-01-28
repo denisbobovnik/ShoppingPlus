@@ -25,6 +25,12 @@
             app:srcCompat="@drawable/default_card" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/click"/>
+
+        <TextView
             android:id="@+id/tvStevilkaKartice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
