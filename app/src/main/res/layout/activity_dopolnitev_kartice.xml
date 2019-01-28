@@ -15,16 +15,25 @@
 
         <!--imageview za sliko, upload slike, pa selector za preddefinirane trgovine (morda lokalno)-->
 
+        <ImageView
+            android:id="@+id/ivSlikaKartice"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            android:layout_width="250dp"
+            android:layout_height="159dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/default_card" />
+
         <TextView
             android:id="@+id/tvStevilkaKartice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/stevilkaKartice"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="20dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 

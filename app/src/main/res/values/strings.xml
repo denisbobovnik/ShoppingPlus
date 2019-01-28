@@ -19,6 +19,11 @@
     <string name="loggingIn">Prijavljam uporabnika...</string>
     <string name="addingCard">Dodajam kartico...</string>
     <string name="loginSuccess">Prijava uspešna!</string>
+    <string name="chooseSource">Izberite vir</string>
+    <string name="chooseFailed">Izbor spodletel! Prosim, poskusite ponovno.</string>
+    <string name="kamera">Kamera</string>
+    <string name="galerija">Galerija</string>
+    <string name="preklici">Prekliči</string>
     <string name="loginFailed">Prijava neuspešna! Prosim, poskusite ponovno.</string>
     <string name="photoUploadSuccess">Nalaganje slike kartice uspešno!</string>
     <string name="photoUploadFailure">Nalaganje slike kartice spodletelo! Prosim, poskusite ponovno.</string>

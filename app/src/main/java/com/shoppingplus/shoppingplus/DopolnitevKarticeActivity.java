@@ -3,17 +3,10 @@ package com.shoppingplus.shoppingplus;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,16 +24,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
-import java.io.ByteArrayOutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.UUID;
-
-public class DopolnitevKarticeActivity extends AppCompatActivity {
+public class DopolnitevKarticeActivity extends AppCompatActivity implements IPickResult {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -51,7 +39,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity {
     private EditText etImeTrgovine;
     private Button btnDodajKartico;
     private ProgressDialog progressDialog;
-    private ImageView ivNewScan;
+    private ImageView ivNewScan, ivSlikaKartice;
 
     @Override
     protected void onStart() {
@@ -97,6 +85,19 @@ public class DopolnitevKarticeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DopolnitevKarticeActivity.this, ScanActivity.class);
                 startActivityForResult(intent, 0);
+            }
+        });
+
+        ivSlikaKartice = (ImageView)  findViewById(R.id.ivSlikaKartice);
+        ivSlikaKartice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PickSetup ps = new PickSetup()
+                        .setTitle(getResources().getString(R.string.chooseSource))
+                        .setCameraButtonText(getResources().getString(R.string.kamera))
+                        .setGalleryButtonText(getResources().getString(R.string.galerija))
+                        .setCancelText(getResources().getString(R.string.preklici));
+                PickImageDialog.build(ps).show(DopolnitevKarticeActivity.this);
             }
         });
 
@@ -241,5 +242,14 @@ public class DopolnitevKarticeActivity extends AppCompatActivity {
             firebaseAuth.signOut();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPickResult(PickResult r) {
+        if (r.getError() == null) {
+            ivSlikaKartice.setImageBitmap(r.getBitmap());
+        } else {
+            Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.chooseFailed), Toast.LENGTH_SHORT).show();
+        }
     }
 }
