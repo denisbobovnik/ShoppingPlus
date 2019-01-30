@@ -346,10 +346,19 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     @Override
     public void onPickResult(PickResult r) {
         if (r.getError() == null) {
-            ivSlikaKartice.setImageBitmap(r.getBitmap());
+            ivSlikaKartice.setImageBitmap(compressImageToMax(r.getBitmap(), 1000000));
             slikaNalozena = true;
         } else {
             Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.chooseFailed), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public Bitmap compressImageToMax(Bitmap image, int maxBytes){
+        int oldSize = image.getByteCount();
+        while (image != null && image.getByteCount() > maxBytes){
+            image = Bitmap.createScaledBitmap(image, image.getWidth() / 2, image.getHeight() / 2, false);
+            oldSize = image.getByteCount();
+        }
+        return image;
     }
 }
