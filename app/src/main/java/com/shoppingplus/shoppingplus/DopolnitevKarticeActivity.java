@@ -3,6 +3,8 @@ package com.shoppingplus.shoppingplus;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,8 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,10 +29,18 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.UUID;
 
 public class DopolnitevKarticeActivity extends AppCompatActivity implements IPickResult {
 
@@ -35,11 +48,13 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private StorageReference storageRef;
     private EditText etStevilkaKartice;
     private EditText etImeTrgovine;
     private Button btnDodajKartico;
     private ProgressDialog progressDialog;
     private ImageView ivNewScan, ivSlikaKartice;
+    private boolean slikaNalozena;
 
     @Override
     protected void onStart() {
@@ -52,9 +67,12 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dopolnitev_kartice);
 
+        slikaNalozena = false;
+
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference("kartice");
 
         progressDialog = new ProgressDialog(this);
 
@@ -128,85 +146,107 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
         progressDialog.setMessage(getResources().getString(R.string.addingCard));
         progressDialog.show();
 
-        Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice);
-        k.setUrl_slike("https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/kartice%2Fdefault_card.png?alt=media&token=5ea99819-8be6-4c61-845b-05879c1646c9");
+        final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/kartice%2Fdefault_card.png?alt=media&token=5ea99819-8be6-4c61-845b-05879c1646c9");
 
-        if(false) {
-            final String url_slike;
+        if(slikaNalozena) { //gre za nalaganje slike
+            ivSlikaKartice.setDrawingCacheEnabled(true);
+            ivSlikaKartice.buildDrawingCache();
+            Bitmap bitmap = ((BitmapDrawable) ivSlikaKartice.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            String path = UUID.randomUUID().toString();
+            final StorageReference karticaReference = storageRef.child(path);
+
+            UploadTask uploadTask = karticaReference.putBytes(data);
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return karticaReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+
+                        Kartica kartica = new Kartica(k);
+                        kartica.setUrl_slike(downloadUri.toString());
+
+                        CollectionReference kartice = db.collection("kartice");
+                        kartice.add(kartica).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                etStevilkaKartice.setText("");
+                                etImeTrgovine.setText("");
+                                ivNewScan.setEnabled(true);
+                                btnDodajKartico.setEnabled(true);
+                                progressDialog.hide();
+                                startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                                slikaNalozena = false;
+                                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                etStevilkaKartice.setText("");
+                                etImeTrgovine.setText("");
+                                ivNewScan.setEnabled(true);
+                                btnDodajKartico.setEnabled(true);
+                                progressDialog.hide();
+                                startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                                slikaNalozena = false;
+                                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        System.out.print("EXCEPTION: " + task.getException());
+                    }
+                }
+            });
+
+
+
+
             //uporabnik je naložo lastno sliko, naložimo in prepišemo url v kartici
+
+
+
+
+        } else { //gre za default tip nalaganja
+            CollectionReference kartice = db.collection("kartice");
+            kartice.add(k).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    etStevilkaKartice.setText("");
+                    etImeTrgovine.setText("");
+                    ivNewScan.setEnabled(true);
+                    btnDodajKartico.setEnabled(true);
+                    progressDialog.hide();
+                    startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                    slikaNalozena = false;
+                    Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    etStevilkaKartice.setText("");
+                    etImeTrgovine.setText("");
+                    ivNewScan.setEnabled(true);
+                    btnDodajKartico.setEnabled(true);
+                    progressDialog.hide();
+                    startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                    slikaNalozena = false;
+                    Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
-        CollectionReference kartice = db.collection("kartice");
-        kartice.add(k).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                etStevilkaKartice.setText("");
-                etImeTrgovine.setText("");
-                ivNewScan.setEnabled(true);
-                btnDodajKartico.setEnabled(true);
-                progressDialog.hide();
-                startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
-                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                etStevilkaKartice.setText("");
-                etImeTrgovine.setText("");
-                ivNewScan.setEnabled(true);
-                btnDodajKartico.setEnabled(true);
-                progressDialog.hide();
-                startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
-                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        /*
-        UploadTask uploadTask = reference.putBytes(data, metadata);
-        uploadTask.addOnSuccessListener(DopolnitevKarticeActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                reference.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        k.setUrl_slike(uri.toString());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        //progressDialog.hide();
-
-                        etStevilkaKartice.setText("");
-                        etImeTrgovine.setText("");
-
-                        Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.didntGetURL), Toast.LENGTH_SHORT).show();
-
-                        finish();
-
-                        Intent intent = new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //da ne ob kliku na nazaj pride nazaj na DopolnitevKarticeActiviry (uporabnik)
-                        startActivity(intent);
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                //progressDialog.hide();
-
-                etStevilkaKartice.setText("");
-                etImeTrgovine.setText("");
-
-                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.photoUploadFailure), Toast.LENGTH_SHORT).show();
-
-                finish();
-
-                Intent intent = new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //da ne ob kliku na nazaj pride nazaj na DopolnitevKarticeActiviry (uporabnik)
-                startActivity(intent);
-            }
-        });
-        */
         //naredit upload slike, če uporabnik ne uproabi naj naloži na cloud storage default sliko, z urljem skupaj vnese v firebase in zakljuci ter gre nazaj na senzam..tam prikazes slik
         //seznam se mora posodobiti ob vračilu - https://firebase.google.com/docs/database/unity/retrieve-data
         //ce uporabnik ne izbere slike oz nalozi, pol nalozzi default - https://firebase.google.com/docs/storage/android/start
@@ -248,6 +288,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     public void onPickResult(PickResult r) {
         if (r.getError() == null) {
             ivSlikaKartice.setImageBitmap(r.getBitmap());
+            slikaNalozena = true;
         } else {
             Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.chooseFailed), Toast.LENGTH_SHORT).show();
         }
