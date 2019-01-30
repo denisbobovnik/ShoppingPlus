@@ -3,6 +3,7 @@ package com.shoppingplus.shoppingplus;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.Continuation;
@@ -28,21 +32,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class DopolnitevKarticeActivity extends AppCompatActivity implements IPickResult {
+public class DopolnitevKarticeActivity extends AppCompatActivity implements IPickResult, AdapterView.OnItemSelectedListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -55,6 +59,8 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     private ProgressDialog progressDialog;
     private ImageView ivNewScan, ivSlikaKartice;
     private boolean slikaNalozena;
+    private Spinner spinStaticStores;
+    private List<StaticnaTrgovina> staticneTrgovine;
 
     @Override
     protected void onStart() {
@@ -75,6 +81,9 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
         storageRef = storage.getReference("kartice");
 
         progressDialog = new ProgressDialog(this);
+
+        spinStaticStores = (Spinner) findViewById(R.id.spinStaticStores);
+        nafilajSpinner();
 
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -123,6 +132,70 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
         startActivityForResult(intent, 0);
     }
 
+    private void nafilajSpinner() {
+        db.collection("staticne_trgovine")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<StaticnaTrgovina> trgovine = new ArrayList<StaticnaTrgovina>();
+                            for (QueryDocumentSnapshot document : task.getResult())
+                                trgovine.add(new StaticnaTrgovina((String) document.get("naziv_trgovine"), (String) document.getString("url_slike")));
+
+                            String[] imenaTrgovin = new String[trgovine.size()];
+                            for(int i=0; i<trgovine.size(); i++)
+                                imenaTrgovin[i] = trgovine.get(i).getNaziv_trgovine();
+
+                            nastaviGlobalno(trgovine);
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(DopolnitevKarticeActivity.this, android.R.layout.simple_spinner_item, imenaTrgovin);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinStaticStores.setAdapter(adapter);
+                            spinStaticStores.setOnItemSelectedListener(DopolnitevKarticeActivity.this);
+                        } else {
+                            Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.staticNotFound), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void nastaviGlobalno(List<StaticnaTrgovina> trgovine) {
+        staticneTrgovine = new ArrayList<StaticnaTrgovina>();
+        for(StaticnaTrgovina s : trgovine)
+            staticneTrgovine.add(s);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        slikaNalozena = true;
+
+        if(staticneTrgovine.get(position).getNaziv_trgovine().equals("(po meri)"))
+            etImeTrgovine.setText("");
+        else
+            etImeTrgovine.setText(staticneTrgovine.get(position).getNaziv_trgovine());
+
+        StorageReference httpsReference = storage.getReferenceFromUrl(staticneTrgovine.get(position).getUrl_slike());
+        final long ONE_MEGABYTE = 1024 * 1024;
+        httpsReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ivSlikaKartice.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.staticPhotoLoadFailure), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
     private void dodajKartico() {
         String stevilka_kartice = etStevilkaKartice.getText().toString().trim();
         String ime_trgovine = etImeTrgovine.getText().toString().trim();
@@ -146,7 +219,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
         progressDialog.setMessage(getResources().getString(R.string.addingCard));
         progressDialog.show();
 
-        final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/kartice%2Fdefault_card.png?alt=media&token=5ea99819-8be6-4c61-845b-05879c1646c9");
+        final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/default_slike%2Fdefault_card.png?alt=media&token=1084fdf6-1a49-42bf-82f4-0cad94d425c7");
 
         if(slikaNalozena) { //gre za nalaganje slike
             ivSlikaKartice.setDrawingCacheEnabled(true);
@@ -204,19 +277,10 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                             }
                         });
                     } else {
-                        System.out.print("EXCEPTION: " + task.getException());
+                        Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-
-
-
-
-            //uporabnik je naložo lastno sliko, naložimo in prepišemo url v kartici
-
-
-
-
         } else { //gre za default tip nalaganja
             CollectionReference kartice = db.collection("kartice");
             kartice.add(k).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -245,11 +309,6 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                 }
             });
         }
-
-
-        //naredit upload slike, če uporabnik ne uproabi naj naloži na cloud storage default sliko, z urljem skupaj vnese v firebase in zakljuci ter gre nazaj na senzam..tam prikazes slik
-        //seznam se mora posodobiti ob vračilu - https://firebase.google.com/docs/database/unity/retrieve-data
-        //ce uporabnik ne izbere slike oz nalozi, pol nalozzi default - https://firebase.google.com/docs/storage/android/start
     }
 
     @Override

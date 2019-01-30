@@ -22,7 +22,10 @@
     <string name="chooseSource">Izberite vir</string>
     <string name="chooseFailed">Izbor spodletel! Prosim, poskusite ponovno.</string>
     <string name="kamera">Kamera</string>
+    <string name="staticNotFound">Statičnih trgovin ni bilo mogoče naložiti. Prosim, poskusite ponovno.</string>
+    <string name="staticPhotoLoadFailure">Nalaganje slike kartice neuspešno! Prosim, poskusite ponovno.</string>
     <string name="galerija">Galerija</string>
+    <string name="staticStores">Izbira iz obstoječega nabora (opcijsko)</string>
     <string name="click">(klik na sliko za urejanje)</string>
     <string name="preklici">Prekliči</string>
     <string name="loginFailed">Prijava neuspešna! Prosim, poskusite ponovno.</string>
