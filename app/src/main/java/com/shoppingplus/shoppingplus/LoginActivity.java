@@ -23,6 +23,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginBehavior;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -57,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private TextView tvForgotPassword;
     private SignInButton sibGoogle;
-    LoginButton loginButton;
+    private LoginButton loginButton;
     private final static int RC_SIGN_IN = 2;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                nadaljujSOpozorilom(loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
@@ -167,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+/*  BETA WARNING
     private void nadaljujSOpozorilom(final LoginResult loginResult) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
         dialog.setTitle(getResources().getString(R.string.betaWarning));
@@ -188,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog ad = dialog.create();
         ad.show();
     }
-
+*/
     //Google prijava
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -199,32 +201,17 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        // Google login
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
-
                 firebaseAuthWithGoogle(account);
-                /*ZNANA *TEŽAVA*
-                firebaseAuth.fetchProvidersForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                        boolean check = !task.getResult().getProviders().isEmpty();
-                        if(check) {
-                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.userExists), Toast.LENGTH_SHORT).show();
-                        } else {
-                            firebaseAuthWithGoogle(account);
-                        }
-                    }
-                });
-                */
             } catch (ApiException e) {
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.googleAuthError), Toast.LENGTH_SHORT).show();
             }
         } else {
-            // Pass the activity result back to the Facebook SDK
+            // Facebook login
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
