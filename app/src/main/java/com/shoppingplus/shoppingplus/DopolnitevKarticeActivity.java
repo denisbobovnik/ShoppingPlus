@@ -1,6 +1,8 @@
 package com.shoppingplus.shoppingplus;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,7 +29,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -197,118 +201,136 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     }
 
     private void dodajKartico() {
-        String stevilka_kartice = etStevilkaKartice.getText().toString().trim();
-        String ime_trgovine = etImeTrgovine.getText().toString().trim();
+        final String stevilka_kartice = etStevilkaKartice.getText().toString().trim();
+        final String ime_trgovine = etImeTrgovine.getText().toString().trim();
 
+        //potrditev veljavnosti vnosov
         if(stevilka_kartice.isEmpty()) {
             etStevilkaKartice.setError(getResources().getString(R.string.stevilkaKarticeRequired));
             etStevilkaKartice.requestFocus();
             return;
         }
-
         if(ime_trgovine.isEmpty()) {
             etImeTrgovine.setError(getResources().getString(R.string.imeTrgovineRequired));
             etImeTrgovine.requestFocus();
             return;
         }
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //potrditev pravilnosti vnosov
+        AlertDialog.Builder dialog = new AlertDialog.Builder(DopolnitevKarticeActivity.this);
+        dialog.setTitle(getResources().getString(R.string.validityCheck));
+        dialog.setMessage(getResources().getString(R.string.validityDetails));
+        dialog.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        ivNewScan.setEnabled(false);
-        btnDodajKartico.setEnabled(false);
-        progressDialog.setMessage(getResources().getString(R.string.addingCard));
-        progressDialog.show();
+                ivNewScan.setEnabled(false);
+                btnDodajKartico.setEnabled(false);
+                progressDialog.setMessage(getResources().getString(R.string.addingCard));
+                progressDialog.show();
 
-        final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/default_slike%2Fdefault_card.png?alt=media&token=1084fdf6-1a49-42bf-82f4-0cad94d425c7");
+                final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/default_slike%2Fdefault_card.png?alt=media&token=1084fdf6-1a49-42bf-82f4-0cad94d425c7");
 
-        if(slikaNalozena) { //gre za nalaganje slike
-            ivSlikaKartice.setDrawingCacheEnabled(true);
-            ivSlikaKartice.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) ivSlikaKartice.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] data = baos.toByteArray();
+                if(slikaNalozena) { //gre za nalaganje slike
+                    ivSlikaKartice.setDrawingCacheEnabled(true);
+                    ivSlikaKartice.buildDrawingCache();
+                    Bitmap bitmap = ((BitmapDrawable) ivSlikaKartice.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] data = baos.toByteArray();
 
-            String path = UUID.randomUUID().toString();
-            final StorageReference karticaReference = storageRef.child(path);
+                    String path = UUID.randomUUID().toString();
+                    final StorageReference karticaReference = storageRef.child(path);
 
-            UploadTask uploadTask = karticaReference.putBytes(data);
-            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return karticaReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-                        Uri downloadUri = task.getResult();
-
-                        Kartica kartica = new Kartica(k);
-                        kartica.setUrl_slike(downloadUri.toString());
-
-                        CollectionReference kartice = db.collection("kartice");
-                        kartice.add(kartica).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                etStevilkaKartice.setText("");
-                                etImeTrgovine.setText("");
-                                ivNewScan.setEnabled(true);
-                                btnDodajKartico.setEnabled(true);
-                                progressDialog.hide();
-                                startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
-                                slikaNalozena = false;
-                                Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
+                    UploadTask uploadTask = karticaReference.putBytes(data);
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                etStevilkaKartice.setText("");
-                                etImeTrgovine.setText("");
-                                ivNewScan.setEnabled(true);
-                                btnDodajKartico.setEnabled(true);
-                                progressDialog.hide();
-                                startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
-                                slikaNalozena = false;
+                            return karticaReference.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+
+                                Kartica kartica = new Kartica(k);
+                                kartica.setUrl_slike(downloadUri.toString());
+
+                                CollectionReference kartice = db.collection("kartice");
+                                kartice.add(kartica).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        etStevilkaKartice.setText("");
+                                        etImeTrgovine.setText("");
+                                        ivNewScan.setEnabled(true);
+                                        btnDodajKartico.setEnabled(true);
+                                        progressDialog.hide();
+                                        startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                                        slikaNalozena = false;
+                                        Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        etStevilkaKartice.setText("");
+                                        etImeTrgovine.setText("");
+                                        ivNewScan.setEnabled(true);
+                                        btnDodajKartico.setEnabled(true);
+                                        progressDialog.hide();
+                                        startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                                        slikaNalozena = false;
+                                        Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
                                 Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    } else {
-                        Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
-                    }
+                        }
+                    });
+                } else { //gre za default tip nalaganja
+                    CollectionReference kartice = db.collection("kartice");
+                    kartice.add(k).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            etStevilkaKartice.setText("");
+                            etImeTrgovine.setText("");
+                            ivNewScan.setEnabled(true);
+                            btnDodajKartico.setEnabled(true);
+                            progressDialog.hide();
+                            startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                            slikaNalozena = false;
+                            Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            etStevilkaKartice.setText("");
+                            etImeTrgovine.setText("");
+                            ivNewScan.setEnabled(true);
+                            btnDodajKartico.setEnabled(true);
+                            progressDialog.hide();
+                            startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
+                            slikaNalozena = false;
+                            Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-            });
-        } else { //gre za default tip nalaganja
-            CollectionReference kartice = db.collection("kartice");
-            kartice.add(k).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    etStevilkaKartice.setText("");
-                    etImeTrgovine.setText("");
-                    ivNewScan.setEnabled(true);
-                    btnDodajKartico.setEnabled(true);
-                    progressDialog.hide();
-                    startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
-                    slikaNalozena = false;
-                    Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardAdded), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    etStevilkaKartice.setText("");
-                    etImeTrgovine.setText("");
-                    ivNewScan.setEnabled(true);
-                    btnDodajKartico.setEnabled(true);
-                    progressDialog.hide();
-                    startActivity(new Intent(DopolnitevKarticeActivity.this, KarticeActivity.class));
-                    slikaNalozena = false;
-                    Toast.makeText(DopolnitevKarticeActivity.this, getResources().getString(R.string.cardNotAdded), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            }
+        });
+        dialog.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog ad = dialog.create();
+        ad.show();
     }
 
     @Override

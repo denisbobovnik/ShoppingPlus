@@ -169,28 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-/*  BETA WARNING
-    private void nadaljujSOpozorilom(final LoginResult loginResult) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-        dialog.setTitle(getResources().getString(R.string.betaWarning));
-        dialog.setMessage(getResources().getString(R.string.betaDetails));
-        dialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-        });
-        dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
 
-        AlertDialog ad = dialog.create();
-        ad.show();
-    }
-*/
     //Google prijava
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
