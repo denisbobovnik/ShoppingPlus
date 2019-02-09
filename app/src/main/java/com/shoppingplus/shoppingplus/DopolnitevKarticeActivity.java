@@ -41,6 +41,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -65,6 +70,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     private boolean slikaNalozena;
     private Spinner spinStaticStores;
     private List<StaticnaTrgovina> staticneTrgovine;
+    private String tip_kode;
 
     @Override
     protected void onStart() {
@@ -230,7 +236,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                 progressDialog.setMessage(getResources().getString(R.string.addingCard));
                 progressDialog.show();
 
-                final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/default_slike%2Fdefault_card.png?alt=media&token=1084fdf6-1a49-42bf-82f4-0cad94d425c7");
+                final Kartica k = new Kartica(user.getUid(), ime_trgovine, stevilka_kartice, "https://firebasestorage.googleapis.com/v0/b/shoppingplus-5a575.appspot.com/o/default_slike%2Fdefault_card.png?alt=media&token=1084fdf6-1a49-42bf-82f4-0cad94d425c7", tip_kode);
 
                 if(slikaNalozena) { //gre za nalaganje slike
                     ivSlikaKartice.setDrawingCacheEnabled(true);
@@ -341,7 +347,10 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                     Barcode barcode = data.getParcelableExtra("crtnaKoda");
                     etStevilkaKartice.setText("");
                     etStevilkaKartice.setText(barcode.displayValue);
+                    tip_kode = decodeFormat(barcode.format);
                 }
+            } else if(resultCode== CommonStatusCodes.CANCELED) {
+                tip_kode = "QR_CODE";
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -382,5 +391,104 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
             oldSize = image.getByteCount();
         }
         return image;
+    }
+
+    public String decodeFormat(int format) {
+        switch (format) {
+            case Barcode.CODE_128:
+                return "CODE_128";
+            case Barcode.CODE_39:
+                return "CODE_39";
+            case Barcode.CODE_93:
+                return "CODE_93";
+            case Barcode.CODABAR:
+                return "CODABAR";
+            case Barcode.DATA_MATRIX:
+                return "DATA_MATRIX";
+            case Barcode.EAN_13:
+                return "EAN_13";
+            case Barcode.EAN_8:
+                return "EAN_8";
+            case Barcode.ITF:
+                return "ITF";
+            case Barcode.QR_CODE:
+                return "QR_CODE";
+            case Barcode.UPC_A:
+                return "UPC_A";
+            case Barcode.UPC_E:
+                return "UPC_E";
+            case Barcode.PDF417:
+                return "PDF417";
+            case Barcode.AZTEC:
+                return "AZTEC";
+            default:
+                return "QR_CODE";
+        }
+    }
+
+    public int encodeFormat(String format) {
+        switch (format) {
+            case "CODE_128":
+                return Barcode.CODE_128;
+            case "CODE_39":
+                return Barcode.CODE_39;
+            case "CODE_93":
+                return Barcode.CODE_93;
+            case "CODABAR":
+                return Barcode.CODABAR;
+            case "DATA_MATRIX":
+                return Barcode.DATA_MATRIX;
+            case "EAN_13":
+                return Barcode.EAN_13;
+            case "EAN_8":
+                return Barcode.EAN_8;
+            case "ITF":
+                return Barcode.ITF;
+            case "QR_CODE":
+                return Barcode.QR_CODE;
+            case "UPC_A":
+                return Barcode.UPC_A;
+            case "UPC_E":
+                return Barcode.UPC_E;
+            case "PDF417":
+                return Barcode.PDF417;
+            case "AZTEC":
+                return Barcode.AZTEC;
+            default:
+                return Barcode.QR_CODE;
+        }
+    }
+
+    public BarcodeFormat pretvoriFormat(int vhodni) {
+        switch (vhodni) {
+            case Barcode.CODE_128:
+                return BarcodeFormat.CODE_128;
+            case Barcode.CODE_39:
+                return BarcodeFormat.CODE_39;
+            case Barcode.CODE_93:
+                return BarcodeFormat.CODE_93;
+            case Barcode.CODABAR:
+                return BarcodeFormat.CODABAR;
+            case Barcode.DATA_MATRIX:
+                return BarcodeFormat.DATA_MATRIX;
+            case Barcode.EAN_13:
+                return BarcodeFormat.EAN_13;
+            case Barcode.EAN_8:
+                return BarcodeFormat.EAN_8;
+            case Barcode.ITF:
+                return BarcodeFormat.ITF;
+            case Barcode.QR_CODE:
+                return BarcodeFormat.QR_CODE;
+            case Barcode.UPC_A:
+                return BarcodeFormat.UPC_A;
+            case Barcode.UPC_E:
+                return BarcodeFormat.UPC_E;
+            case Barcode.PDF417:
+                return BarcodeFormat.PDF_417;
+            case Barcode.AZTEC:
+                return BarcodeFormat.AZTEC;
+            default:
+                return BarcodeFormat.QR_CODE;
+        }
     }
 }

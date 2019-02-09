@@ -39,5 +39,7 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0' //cardview izgled za seznam kartic
     implementation 'com.google.firebase:firebase-storage:16.0.1' //shramba za slike kartic
     implementation 'com.github.jrvansuita:PickImage:2.2.4' //za picturedialog
+    implementation 'com.google.zxing:core:3.2.1' //zxing (prikaz crtne kode v ustreznem formatu)
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar' //drugi dependency za zxing
 }
 apply plugin: 'com.google.gms.google-services'

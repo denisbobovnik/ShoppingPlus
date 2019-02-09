@@ -59,6 +59,8 @@ public class ScanActivity extends AppCompatActivity {
         btnManualEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(ScanActivity.this, DopolnitevKarticeActivity.class);
+                setResult(CommonStatusCodes.CANCELED, intent);
                 finish();
             }
         });

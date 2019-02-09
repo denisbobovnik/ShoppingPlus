@@ -5,18 +5,27 @@ public class Kartica {
     private String naziv_trgovine;
     private String sifra_kartice;
     private String url_slike;
+    private String tip_sifre;
 
     public Kartica(Kartica k) {
         this.id_uporabnika = k.getId_uporabnika();
         this.naziv_trgovine = k.getNaziv_trgovine();
         this.sifra_kartice = k.getSifra_kartice();
         this.url_slike = k.getUrl_slike();
+        this.tip_sifre = k.getTip_sifre();
     }
     public Kartica(String id_uporabnika, String naziv_trgovine, String sifra_kartice, String url_slike) {
         this.id_uporabnika = id_uporabnika;
         this.naziv_trgovine = naziv_trgovine;
         this.sifra_kartice = sifra_kartice;
         this.url_slike = url_slike;
+    }
+    public Kartica(String id_uporabnika, String naziv_trgovine, String sifra_kartice, String url_slike, String tip_sifre) {
+        this.id_uporabnika = id_uporabnika;
+        this.naziv_trgovine = naziv_trgovine;
+        this.sifra_kartice = sifra_kartice;
+        this.url_slike = url_slike;
+        this.tip_sifre = tip_sifre;
     }
     public Kartica(String id_uporabnika, String naziv_trgovine, String sifra_kartice) {
         this.id_uporabnika = id_uporabnika;
@@ -47,5 +56,11 @@ public class Kartica {
     }
     public void setUrl_slike(String url_slike) {
         this.url_slike = url_slike;
+    }
+    public String getTip_sifre() {
+        return tip_sifre;
+    }
+    public void setTip_sifre(String tip_sifre) {
+        this.tip_sifre = tip_sifre;
     }
 }
