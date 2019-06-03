@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="40dp"
+    android:layout_marginBottom="20dp"
+    tools:context=".PodrobnostiKarticeActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        tools:context=".LoginActivity"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/id_SlikaPodrobnostiKartice"
+            android:layout_marginTop="5dp"
+            android:layout_width="349dp"
+            android:layout_height="175dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/id_SlikaSifrePodrobnostiKartice"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            android:layout_width="250dp"
+            android:layout_height="159dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/id_tvSifraPodrobnostiKartice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/databaseSifraCard"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/btnSeznamArtiklov"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gumbSeznamArtiklov"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btnZemljevid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gumbZemljevid"
+            android:layout_marginTop="10dp"/>
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
