@@ -52,7 +52,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         gumbSeznamArtiklov.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), SeznamArtiklovActivity.class);
+                Intent intent = new Intent(PodrobnostiKarticeActivity.this, SeznamArtiklovActivity.class);
                 startActivity(intent);
             }
         });

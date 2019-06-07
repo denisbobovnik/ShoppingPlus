@@ -93,6 +93,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
         progressDialog = new ProgressDialog(this);
 
         spinStaticStores = (Spinner) findViewById(R.id.spinStaticStores);
+
         nafilajSpinner();
 
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -104,6 +105,8 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                 }
             }
         };
+
+
 
         etStevilkaKartice = (EditText) findViewById(R.id.etStevilkaKartice);
         etImeTrgovine = (EditText) findViewById(R.id.etImeTrgovine);
@@ -212,11 +215,13 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
 
         //potrditev veljavnosti vnosov
         if(stevilka_kartice.isEmpty()) {
+            //etStevilkaKartice.setError("Številka kartice je zahtevana!");
             etStevilkaKartice.setError(getResources().getString(R.string.stevilkaKarticeRequired));
             etStevilkaKartice.requestFocus();
             return;
         }
         if(ime_trgovine.isEmpty()) {
+            //etImeTrgovine.setError("Naziv trgovine je zahtevan!");
             etImeTrgovine.setError(getResources().getString(R.string.imeTrgovineRequired));
             etImeTrgovine.requestFocus();
             return;

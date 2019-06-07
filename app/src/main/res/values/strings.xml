@@ -96,10 +96,19 @@
     <!--PETRA DODALA***********:-->
     <string name="databaseTitleCard">Naslov</string>
     <string name="databaseSifraCard">Šifra</string>
-    <string name="gumbSeznamArtiklov">Seznam Artiklov</string>
+    <string name="gumbSeznamArtiklov">Nakupovalni seznam</string>
     <string name="gumbZemljevid">Trgovine</string>
     <string name="kartice">Kartice</string>
     <string name="map_key" translatable="false">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
-
     <!--**************************:-->
+    <string name="seznamArtiklov">Seznam artiklov </string>
+    <string name="dodajArtikel">Dopolni seznam:</string>
+    <string name="gumbDodajArtikel">Dodaj nov artikel</string>
+    <string name="dodajNoveArtikle">Dodaj nov artikel</string>
+    <string name="gumbShraniArtikle">Shrani</string>
+    <string name="nazivArtikla">Naziv: </string>
+    <string name="kolicinaArtikla">Količina: </string>
+    <string name="opisArtikla">Dodaten opis: </string>
+    <string name="izdelekVKosarici">Ali je izdelek že v košarici: </string>
+
 </resources>
