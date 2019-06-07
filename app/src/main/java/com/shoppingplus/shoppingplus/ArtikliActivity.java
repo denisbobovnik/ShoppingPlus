@@ -74,7 +74,7 @@ public class ArtikliActivity extends AppCompatActivity {
         opisArtikla = (EditText) findViewById(R.id.opisArtikla);
         kosaricaZArtiklom = (RadioGroup) findViewById(R.id.kosaricaZArtiklom);
 
-        btnShraniArtikel = (Button)findViewById(R.id.btnDodajArtikel);
+        btnShraniArtikel = (Button)findViewById(R.id.btnShraniArtikel);
         btnShraniArtikel.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

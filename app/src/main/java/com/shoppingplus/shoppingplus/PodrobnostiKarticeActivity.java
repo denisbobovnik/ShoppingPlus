@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -22,6 +25,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
     private ImageView imgSlika;
     private ImageView imgKoda; //za pridobitev tipa sifre
     private TextView tvSifra;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
 
         tvSifra.setText(Sifra);
 
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //****************************************
         //za gumb ki preusmeri na seznam artiklov
@@ -90,6 +95,23 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.editProfile) {
+            Intent intent = new Intent(PodrobnostiKarticeActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        } else { //logout
+            firebaseAuth.signOut();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public int encodeFormat(String format) {

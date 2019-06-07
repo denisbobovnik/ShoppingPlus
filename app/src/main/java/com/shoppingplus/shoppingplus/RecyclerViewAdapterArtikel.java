@@ -16,12 +16,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapterArtikel.MyViewHolder> {
 
     private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
     private Context mContext;
 
-    public RecyclerViewAdapter(Context context, ArrayList<Artikel> artikel) {
+    public RecyclerViewAdapterArtikel(Context context, ArrayList<Artikel> artikel) {
         this.arrayArtikel = artikel;
         this.mContext = context;
     }
@@ -46,16 +46,8 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
                 intent.putExtra("kolicina", artikel.getKolicina_artikla());
                 intent.putExtra("opis", artikel.getOpis_artikla());
                 intent.putExtra("status", artikel.getStatus_artikla());
-
-  //              Intent intent = new Intent(mContext,PodrobnostiKarticeActivity.class);
-                // passing data to the PodrobnostiKartice activity
-  //              intent.putExtra("Slika",artikel.getUrl_slike());
-                //tip sifre za prikaz kode
-   //             intent.putExtra("Tip_sifre",artikel.getTip_sifre());
-   //             intent.putExtra("Sifra",artikel.getSifra_kartice());
-                // intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
-                // start the activity
-   //             mContext.startActivity(intent);
+                intent.putExtra("naziv", artikel.getNaziv_artikla());
+                mContext.startActivity(intent);
             }
         });
     }

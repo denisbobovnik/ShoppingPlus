@@ -26,8 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class SeznamArtiklovActivity extends AppCompatActivity {
-    //public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -38,9 +37,11 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
     //private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
     //private ArrayList<Kartica> arrayKartica = new ArrayList<>() ;
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapterArtikel adapter;
     //private DocumentSnapshot mLastQueriedDocument;
     private View mParentLayout; // ?????
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onStart() {
@@ -66,6 +67,10 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
             }
         };
 
+
+//        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);              //posodobiti id za nov layout
+//        mSwipeRefreshLayout.setOnRefreshListener(this);
+
         dodajNovArtikel = findViewById(R.id.btnDodajArtikel);
         dodajNovArtikel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +92,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
     private void initRecyclerView(){
         if(adapter == null){
             //adapter = new RecyclerViewAdapter(this, arrayKartica);
-            adapter = new RecyclerViewAdapter(this, arrayArtikel);
+            adapter = new RecyclerViewAdapterArtikel(this, arrayArtikel);
         }
 
         artikliRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -130,12 +135,6 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
         Snackbar.make(mParentLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    //@Override
-    public void onRefresh() {
-        getSeznamArtiklov();
-        //mSwipeRefreshLayout.setRefreshing(false);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -153,4 +152,9 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onRefresh() {
+        getSeznamArtiklov();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 }
