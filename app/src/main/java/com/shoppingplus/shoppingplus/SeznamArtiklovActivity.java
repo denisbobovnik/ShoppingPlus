@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -26,7 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class SeznamArtiklovActivity extends AppCompatActivity /*implements SwipeRefreshLayout.OnRefreshListener*/ {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -34,7 +35,6 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
     private Button dodajNovArtikel;
 
     private RecyclerView artikliRecyclerView;
-    //private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
     //private ArrayList<Kartica> arrayKartica = new ArrayList<>() ;
     private RecyclerViewAdapterArtikel adapter;
@@ -42,6 +42,8 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
     private View mParentLayout; // ?????
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    String id_kartice;
 
     @Override
     protected void onStart() {
@@ -68,22 +70,24 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
         };
 
 
-//        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);              //posodobiti id za nov layout
-//        mSwipeRefreshLayout.setOnRefreshListener(this);
+  //      mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout2);
+   //     mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        dodajNovArtikel = findViewById(R.id.btnDodajArtikel);
+        Intent intent = getIntent();
+        id_kartice = intent.getExtras().getString("id_kartice");
+
+     /*   dodajNovArtikel = findViewById(R.id.btnDodajArtikel);
         dodajNovArtikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SeznamArtiklovActivity.this, ArtikliActivity.class);
+                intent.putExtra("id_kartice", id_kartice);
                 startActivity(intent);
             }
         });
-
+*/
         mParentLayout = findViewById(android.R.id.content);
         artikliRecyclerView = findViewById(R.id.recyclerview_seznamArtiklov_id);
-        //mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout2);
-        //mSwipeRefreshLayout.setOnRefreshListener(this);
         initRecyclerView();
         getSeznamArtiklov();
 
@@ -95,7 +99,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
             adapter = new RecyclerViewAdapterArtikel(this, arrayArtikel);
         }
 
-        artikliRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        artikliRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         artikliRecyclerView.setAdapter(adapter);
     }
 
@@ -108,20 +112,16 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
 
         // ????????????????????????????????????????
         CollectionReference notesCollectionRef = db.collection("artikli");
-        notesCollectionRef.whereEqualTo("id_uporabnika", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        notesCollectionRef.whereEqualTo("id_kartice", id_kartice).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    int steviloArtiklov  = task.getResult().size();
-                    System.out.print(steviloArtiklov);
-
-                    Log.d(TAG, "Uspešno ste pridobili artikle");
                     for(QueryDocumentSnapshot document: task.getResult()){
-                        Log.d(TAG, document.getId() + ", " + document.get("url_slike"));
-                        //  document.getId();
-                        Artikel artikel = new Artikel(document.get("naziv_artikla").toString(), document.get("kolicina_artikla").toString(), document.get("opis_artikla").toString(), document.get("status_artikla").toString());
+                        Artikel artikel = new Artikel(document.get("naziv_artikla").toString(), document.get("kolicina_artikla").toString(), document.get("opis_artikla").toString(), document.get("status_artikla").toString(), id_kartice);
                         arrayArtikel.add(artikel);
                     }
+
+                    Log.d(TAG, "Uspešno ste pridobili artikle: " + arrayArtikel.size());
                     adapter.notifyDataSetChanged();
                 }
                 else{
@@ -152,9 +152,9 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRefresh() {
-        getSeznamArtiklov();
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
+ //   @Override
+ //   public void onRefresh() {
+ //       getSeznamArtiklov();
+  //      mSwipeRefreshLayout.setRefreshing(false);
+  //  }
 }

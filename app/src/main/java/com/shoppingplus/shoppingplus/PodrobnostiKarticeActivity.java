@@ -41,6 +41,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         String Slika = intent.getExtras().getString("Slika") ;
         String Koda = intent.getExtras().getString("Tip_sifre") ; //tip sifre
         String Sifra = intent.getExtras().getString("Sifra");
+        final String id_kartice = intent.getExtras().getString("id_kartice");
 
         // Setting values
         Picasso.get()
@@ -58,6 +59,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PodrobnostiKarticeActivity.this, SeznamArtiklovActivity.class);
+                intent.putExtra("id_kartice", id_kartice);
                 startActivity(intent);
             }
         });

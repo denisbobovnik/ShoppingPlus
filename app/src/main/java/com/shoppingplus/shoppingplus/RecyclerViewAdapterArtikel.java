@@ -18,7 +18,7 @@ import java.util.List;
 
 public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapterArtikel.MyViewHolder> {
 
-    private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
+    private ArrayList<Artikel> arrayArtikel;
     private Context mContext;
 
     public RecyclerViewAdapterArtikel(Context context, ArrayList<Artikel> artikel) {
@@ -29,17 +29,17 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(
-                LayoutInflater.from(mContext).inflate(R.layout.listview_linearlayout_artikel, parent, false)
-        );
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_linearlayout_artikel, parent, false);
+        final RecyclerViewAdapterArtikel.MyViewHolder vHolder = new RecyclerViewAdapterArtikel.MyViewHolder(v);
+        return vHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        final Artikel artikel = arrayArtikel.get(position);
+        holder.rvNazivArtikla.setText(arrayArtikel.get(position).getNaziv_artikla());
 
-        holder.artikel_item_id.setOnClickListener(new View.OnClickListener() {
+ /*       holder.artikel_item_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, null);
@@ -49,7 +49,7 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
                 intent.putExtra("naziv", artikel.getNaziv_artikla());
                 mContext.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -60,8 +60,8 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
     class MyViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
 
         //TextView textViewName;
-        TextView rvNazivArtikla;
-        LinearLayout artikel_item_id ;
+        private TextView rvNazivArtikla;
+        private LinearLayout artikel_item_id ;
 
         public MyViewHolder(View itemView) {
             super(itemView);

@@ -40,6 +40,7 @@ public class ArtikliActivity extends AppCompatActivity {
     private EditText opisArtikla;
     private RadioGroup kosaricaZArtiklom;
     private Button btnShraniArtikel;
+    private String id_kartice;
 
     @Override
     protected void onStart() {
@@ -68,6 +69,9 @@ public class ArtikliActivity extends AppCompatActivity {
                 }
             }
         };
+
+        Intent intent = getIntent();
+        id_kartice = intent.getExtras().getString("id_kartice");
 
         nazivArtikla = (EditText) findViewById(R.id.nazivArtikla);
         kolicinaArtikla = (EditText) findViewById(R.id.kolicinaArtikla);
@@ -128,7 +132,7 @@ public class ArtikliActivity extends AppCompatActivity {
                 progressDialog.setMessage("Dodajanje artikla...");
                 progressDialog.show();
 
-                final Artikel a = new Artikel(naziv_artikla, kolicina_artikla, opis_artikla, status_artikla);
+                final Artikel a = new Artikel(naziv_artikla, kolicina_artikla, opis_artikla, status_artikla, id_kartice);
 
                 Artikel artikel_1 = new Artikel(a);
                 CollectionReference artikel = db.collection("artikli");
@@ -149,7 +153,9 @@ public class ArtikliActivity extends AppCompatActivity {
 
                         btnShraniArtikel.setEnabled(true);
                         progressDialog.hide();
-                        startActivity(new Intent(ArtikliActivity.this, SeznamArtiklovActivity.class));
+                        Intent intent = new Intent(ArtikliActivity.this,SeznamArtiklovActivity.class);
+                        intent.putExtra("id_kartice", id_kartice);
+                        startActivity(intent);
                         Toast.makeText(ArtikliActivity.this, "Artikel je bil uspešno dodan! ", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -170,7 +176,9 @@ public class ArtikliActivity extends AppCompatActivity {
 
                         btnShraniArtikel.setEnabled(true);
                         progressDialog.hide();
-                        startActivity(new Intent(ArtikliActivity.this, SeznamArtiklovActivity.class));
+                        Intent intent = new Intent(ArtikliActivity.this,SeznamArtiklovActivity.class);
+                        intent.putExtra("id_kartice", id_kartice);
+                        startActivity(intent);
                         Toast.makeText(ArtikliActivity.this, "Artikel ni bil dodan uspešno! ", Toast.LENGTH_SHORT).show();
                     }
                 });

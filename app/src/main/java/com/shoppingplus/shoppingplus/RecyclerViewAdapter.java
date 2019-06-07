@@ -52,6 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 //tip sifre za prikaz kode
                 intent.putExtra("Tip_sifre",kartica.getTip_sifre());
                 intent.putExtra("Sifra",kartica.getSifra_kartice());
+                intent.putExtra("id_kartice", kartica.getId_kartice());
                // intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
                 // start the activity
                 mContext.startActivity(intent);

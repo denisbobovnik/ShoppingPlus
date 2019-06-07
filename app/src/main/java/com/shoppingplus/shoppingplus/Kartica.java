@@ -6,6 +6,7 @@ public class Kartica {
     private String sifra_kartice;
     private String url_slike;
     private String tip_sifre;
+    private String id_kartice;
 
     public Kartica(Kartica k) {
         this.id_uporabnika = k.getId_uporabnika();
@@ -62,5 +63,13 @@ public class Kartica {
     }
     public void setTip_sifre(String tip_sifre) {
         this.tip_sifre = tip_sifre;
+    }
+
+    public String getId_kartice() {
+        return id_kartice;
+    }
+
+    public void setId_kartice(String id_kartice) {
+        this.id_kartice = id_kartice;
     }
 }

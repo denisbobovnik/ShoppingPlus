@@ -159,6 +159,7 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
                         Log.d(TAG, document.getId() + ", " + document.get("url_slike"));
                          //  document.getId();
                         Kartica kartica = new Kartica(document.get("id_uporabnika").toString(), document.get("naziv_trgovine").toString(), document.get("sifra_kartice").toString(), document.get("url_slike").toString(), document.get("tip_sifre").toString());
+                        kartica.setId_kartice(document.getId());
                         arrayKartica.add(kartica);
                     }
                     adapter.notifyDataSetChanged();
