@@ -18,38 +18,50 @@ import java.util.List;
 
 public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapterArtikel.MyViewHolder> {
 
-    private ArrayList<Artikel> arrayArtikel;
-    private Context mContext;
+    private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>();
+    private Context context;
 
     public RecyclerViewAdapterArtikel(Context context, ArrayList<Artikel> artikel) {
         this.arrayArtikel = artikel;
-        this.mContext = context;
+        this.context = context;
     }
 
-    @NonNull
+    /*@NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_linearlayout_artikel, parent, false);
         final RecyclerViewAdapterArtikel.MyViewHolder vHolder = new RecyclerViewAdapterArtikel.MyViewHolder(v);
         return vHolder;
+    }*/
+
+    @NonNull
+    @Override
+    public RecyclerViewAdapterArtikel.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new RecyclerViewAdapterArtikel.MyViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.cardview_artikel, parent, false)
+        );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
 
-        holder.rvNazivArtikla.setText(arrayArtikel.get(position).getNaziv_artikla());
+        final Artikel artikel = arrayArtikel.get(position);
 
- /*       holder.artikel_item_id.setOnClickListener(new View.OnClickListener() {
+        holder.nazivArtikla.setText(arrayArtikel.get(position).getNaziv_artikla());
+
+        holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, null);
-                intent.putExtra("kolicina", artikel.getKolicina_artikla());
-                intent.putExtra("opis", artikel.getOpis_artikla());
-                intent.putExtra("status", artikel.getStatus_artikla());
-                intent.putExtra("naziv", artikel.getNaziv_artikla());
-                mContext.startActivity(intent);
+                Intent intent = new Intent(context, PodrobnostiArtiklaActivity.class);
+                intent.putExtra("Naziv_artikla", artikel.getNaziv_artikla());
+                intent.putExtra("Kolicina_artikla", artikel.getKolicina_artikla());
+                intent.putExtra("Opis_artikla", artikel.getOpis_artikla());
+                intent.putExtra("Status_artikla", artikel.getStatus_artikla());
+                //intent.putExtra("id_artikla", artikel.getId_artikla());
+                intent.putExtra("id_kartice", artikel.getId_kartice());
+                context.startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override
@@ -57,17 +69,17 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         return arrayArtikel.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        //TextView textViewName;
-        private TextView rvNazivArtikla;
-        private LinearLayout artikel_item_id ;
+        private TextView nazivArtikla;
+        CardView cardView_artikel ;
+        //private LinearLayout artikel_item_id ;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            //textViewName = itemView.findViewById(R.id.kartica_naslov_id);
-            rvNazivArtikla = (TextView) itemView.findViewById(R.id.rvNazivArtikla);
-            artikel_item_id = (LinearLayout) itemView.findViewById(R.id.artikel_item_id);
+            nazivArtikla = (TextView) itemView.findViewById(R.id.rvNazivArtikla);
+            cardView_artikel = (CardView) itemView.findViewById(R.id.cardview_artikel_id);
+            //artikel_item_id = (LinearLayout) itemView.findViewById(R.id.artikel_item_id);
         }
     }
 }

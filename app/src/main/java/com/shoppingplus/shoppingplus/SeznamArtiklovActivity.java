@@ -27,7 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class SeznamArtiklovActivity extends AppCompatActivity /*implements SwipeRefreshLayout.OnRefreshListener*/ {
+public class SeznamArtiklovActivity extends AppCompatActivity /*implements SwipeRefreshLayout.OnRefreshListener */{
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -36,14 +36,12 @@ public class SeznamArtiklovActivity extends AppCompatActivity /*implements Swipe
 
     private RecyclerView artikliRecyclerView;
     private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
-    //private ArrayList<Kartica> arrayKartica = new ArrayList<>() ;
     private RecyclerViewAdapterArtikel adapter;
-    //private DocumentSnapshot mLastQueriedDocument;
-    private View mParentLayout; // ?????
-
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private View mParentLayout;
+    //private SwipeRefreshLayout mSwipeRefreshLayout;
 
     String id_kartice;
+    //String id_artikla;
 
     @Override
     protected void onStart() {
@@ -74,18 +72,20 @@ public class SeznamArtiklovActivity extends AppCompatActivity /*implements Swipe
    //     mSwipeRefreshLayout.setOnRefreshListener(this);
 
         Intent intent = getIntent();
+        //id_artikla = intent.getExtras().getString("id_artikla");
         id_kartice = intent.getExtras().getString("id_kartice");
 
-     /*   dodajNovArtikel = findViewById(R.id.btnDodajArtikel);
+        dodajNovArtikel = findViewById(R.id.btnDodajArtikel);
         dodajNovArtikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SeznamArtiklovActivity.this, ArtikliActivity.class);
+                //intent.putExtra("id_artikla", id_artikla);
                 intent.putExtra("id_kartice", id_kartice);
                 startActivity(intent);
             }
         });
-*/
+
         mParentLayout = findViewById(android.R.id.content);
         artikliRecyclerView = findViewById(R.id.recyclerview_seznamArtiklov_id);
         initRecyclerView();
@@ -95,7 +95,6 @@ public class SeznamArtiklovActivity extends AppCompatActivity /*implements Swipe
 
     private void initRecyclerView(){
         if(adapter == null){
-            //adapter = new RecyclerViewAdapter(this, arrayKartica);
             adapter = new RecyclerViewAdapterArtikel(this, arrayArtikel);
         }
 
@@ -110,18 +109,22 @@ public class SeznamArtiklovActivity extends AppCompatActivity /*implements Swipe
         FirebaseUser user = firebaseAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // ????????????????????????????????????????
         CollectionReference notesCollectionRef = db.collection("artikli");
         notesCollectionRef.whereEqualTo("id_kartice", id_kartice).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
+                    int steviloArtiklov  = task.getResult().size(); //
+                    //System.out.print(steviloArtiklov);
+
+                    //Log.d(TAG, "Uspesno ste pridobili artikle");
                     for(QueryDocumentSnapshot document: task.getResult()){
-                        Artikel artikel = new Artikel(document.get("naziv_artikla").toString(), document.get("kolicina_artikla").toString(), document.get("opis_artikla").toString(), document.get("status_artikla").toString(), id_kartice);
+                        //Log.d(TAG, document.getId() + ", " + document.get("id_kartice"));  ???
+                        Artikel artikel = new Artikel(document.get("naziv_artikla").toString(), document.get("kolicina_artikla").toString(), document.get("opis_artikla").toString(), document.get("status_artikla").toString()/*,id_artikla, */,id_kartice);
+                        //artikel.setId_artikla(document.getId());
                         arrayArtikel.add(artikel);
                     }
 
-                    Log.d(TAG, "Uspešno ste pridobili artikle: " + arrayArtikel.size());
                     adapter.notifyDataSetChanged();
                 }
                 else{
@@ -152,9 +155,9 @@ public class SeznamArtiklovActivity extends AppCompatActivity /*implements Swipe
         return super.onOptionsItemSelected(item);
     }
 
- //   @Override
- //   public void onRefresh() {
- //       getSeznamArtiklov();
-  //      mSwipeRefreshLayout.setRefreshing(false);
-  //  }
+    /*@Override
+    public void onRefresh() {
+        getSeznamArtiklov();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }*/
 }

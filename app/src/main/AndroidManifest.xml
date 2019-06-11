@@ -98,9 +98,23 @@
         </provider>
 
         <activity android:name=".GoogleMapsSearch" />
-        <activity android:name=".PodrobnostiKarticeActivity" />
-        <activity android:name=".SeznamArtiklovActivity"></activity>
-        <activity android:name=".ArtikliActivity"></activity>
+
+        <activity
+            android:name=".PodrobnostiKarticeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".SeznamArtiklovActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".ArtikliActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".PodrobnostiArtiklaActivity"
+            android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>
