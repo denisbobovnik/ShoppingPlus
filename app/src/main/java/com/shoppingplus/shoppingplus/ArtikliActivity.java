@@ -38,8 +38,8 @@ public class ArtikliActivity extends AppCompatActivity {
     private EditText nazivArtikla;
     private EditText kolicinaArtikla;
     private EditText opisArtikla;
-    private RadioGroup kosaricaZArtiklom;
-    private RadioButton radioButton_izbira;
+    /*private RadioGroup kosaricaZArtiklom;
+    private RadioButton radioButton_izbira;*/
     private Button btnShraniArtikel;
     //private String id_artikla;
     private String id_kartice;
@@ -80,13 +80,13 @@ public class ArtikliActivity extends AppCompatActivity {
         kolicinaArtikla = (EditText) findViewById(R.id.kolicinaArtikla);
         opisArtikla = (EditText) findViewById(R.id.opisArtikla);
 
-        kosaricaZArtiklom = (RadioGroup) findViewById(R.id.radioButton_kosaricaZArtiklom);
+        //kosaricaZArtiklom = (RadioGroup) findViewById(R.id.radioButton_kosaricaZArtiklom);
         btnShraniArtikel = (Button)findViewById(R.id.btnShraniArtikel);
         btnShraniArtikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int izbira_radioButton = kosaricaZArtiklom.getCheckedRadioButtonId();
-                radioButton_izbira = (RadioButton) findViewById(izbira_radioButton);
+                /*int izbira_radioButton = kosaricaZArtiklom.getCheckedRadioButtonId();
+                radioButton_izbira = (RadioButton) findViewById(izbira_radioButton);*/
                 //Toast.makeText(ArtikliActivity.this, radioButton_izbira.getText().toString(), Toast.LENGTH_SHORT).show();
                 dodajArtikel();
             }
@@ -96,7 +96,7 @@ public class ArtikliActivity extends AppCompatActivity {
                 final String naziv_artikla = nazivArtikla.getText().toString().trim();
                 final String kolicina_artikla = kolicinaArtikla.getText().toString().trim();
                 final String opis_artikla = opisArtikla.getText().toString().trim();
-                final String status_artikla = radioButton_izbira.getText().toString().trim();
+                //final String status_artikla = radioButton_izbira.getText().toString().trim();
 
                 if (naziv_artikla.isEmpty()) {
                     nazivArtikla.setError("Naziv artikla je zahtevan");
@@ -116,11 +116,11 @@ public class ArtikliActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (status_artikla.isEmpty()) {
+                /*if (status_artikla.isEmpty()) {
                     //kosaricaZArtiklom.setError("Status artikla je zahtevan");
                     kosaricaZArtiklom.requestFocus();
                     return;
-                }
+                }*/
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(ArtikliActivity.this);
                 dialog.setTitle(getResources().getString(R.string.validityCheck));
@@ -134,7 +134,7 @@ public class ArtikliActivity extends AppCompatActivity {
                         progressDialog.setMessage("Dodajanje artikla...");
                         progressDialog.show();
 
-                        final Artikel a = new Artikel(naziv_artikla, kolicina_artikla, opis_artikla, status_artikla/*, id_artikla*/, id_kartice);
+                        final Artikel a = new Artikel(naziv_artikla, kolicina_artikla, opis_artikla/*, status_artikla, id_artikla*/, id_kartice);
 
                         Artikel artikel_1 = new Artikel(a);
                         CollectionReference artikel = db.collection("artikli");

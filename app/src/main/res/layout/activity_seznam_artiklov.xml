@@ -21,15 +21,32 @@
         tools:context=".SeznamArtiklovActivity"
         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/seznamArtiklov"
-        android:layout_gravity="center"
-        android:textSize="24sp" />
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/seznamArtiklov"
+            android:textSize="24sp"
+            android:textStyle="italic" />
 
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="     Količina:          Naziv:                Opis:"
+            android:textSize="19sp" />
         <!--android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

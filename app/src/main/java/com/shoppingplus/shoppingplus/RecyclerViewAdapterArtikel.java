@@ -26,14 +26,6 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         this.context = context;
     }
 
-    /*@NonNull
-    @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_linearlayout_artikel, parent, false);
-        final RecyclerViewAdapterArtikel.MyViewHolder vHolder = new RecyclerViewAdapterArtikel.MyViewHolder(v);
-        return vHolder;
-    }*/
-
     @NonNull
     @Override
     public RecyclerViewAdapterArtikel.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,8 +40,10 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         final Artikel artikel = arrayArtikel.get(position);
 
         holder.nazivArtikla.setText(arrayArtikel.get(position).getNaziv_artikla());
+        holder.kolicinaArtikla.setText(arrayArtikel.get(position).getKolicina_artikla());
+        holder.opisArtikla.setText(arrayArtikel.get(position).getOpis_artikla());
 
-        holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
+        /*holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PodrobnostiArtiklaActivity.class);
@@ -61,7 +55,7 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
                 intent.putExtra("id_kartice", artikel.getId_kartice());
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -72,12 +66,17 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView nazivArtikla;
+        private TextView kolicinaArtikla;
+        private TextView opisArtikla;
         CardView cardView_artikel ;
         //private LinearLayout artikel_item_id ;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             nazivArtikla = (TextView) itemView.findViewById(R.id.rvNazivArtikla);
+            kolicinaArtikla = (TextView) itemView.findViewById(R.id.rvKolicinaArtikla);
+            opisArtikla = (TextView) itemView.findViewById(R.id.rvOpisArtikla);
+
             cardView_artikel = (CardView) itemView.findViewById(R.id.cardview_artikel_id);
             //artikel_item_id = (LinearLayout) itemView.findViewById(R.id.artikel_item_id);
         }

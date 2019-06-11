@@ -31,14 +31,14 @@ public class PodrobnostiArtiklaActivity extends AppCompatActivity {
         nazivArtikla = (TextView) findViewById(R.id.nazivArtikla_prikaz);
         kolicinaArtikla = (TextView) findViewById(R.id.kolicinaArtikla_prikaz);
         opisArtikla = (TextView) findViewById(R.id.dodatenOpisArtikla_prikaz);
-        kosaricaZArtiklom = (RadioGroup) findViewById(R.id.radioButton_kosaricaZArtiklom_prikaz);
+        //kosaricaZArtiklom = (RadioGroup) findViewById(R.id.radioButton_kosaricaZArtiklom_prikaz);
 
         // Recieve data
         Intent intent = getIntent();
         String Naziv = intent.getExtras().getString("Naziv_artikla");
         String Kolicina = intent.getExtras().getString("Kolicina_artikla");
         String Opis = intent.getExtras().getString("Opis_artikla");
-        String Status = intent.getExtras().getString("Status_artikla");
+        //String Status = intent.getExtras().getString("Status_artikla");
         //final String id_artikla = intent.getExtras().getString("id_artikla");
         final String id_kartice = intent.getExtras().getString("id_kartice");
 
