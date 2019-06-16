@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,12 +77,12 @@ public class ArtikliActivity extends AppCompatActivity {
         //id_artikla = intent.getExtras().getString("id_artikla");
         id_kartice = intent.getExtras().getString("id_kartice");
 
-        nazivArtikla = (EditText) findViewById(R.id.nazivArtikla);
-        kolicinaArtikla = (EditText) findViewById(R.id.kolicinaArtikla);
-        opisArtikla = (EditText) findViewById(R.id.opisArtikla);
+        nazivArtikla = findViewById(R.id.nazivArtikla);
+        kolicinaArtikla = findViewById(R.id.kolicinaArtikla);
+        opisArtikla = findViewById(R.id.opisArtikla);
 
         //kosaricaZArtiklom = (RadioGroup) findViewById(R.id.radioButton_kosaricaZArtiklom);
-        btnShraniArtikel = (Button)findViewById(R.id.btnShraniArtikel);
+        btnShraniArtikel = findViewById(R.id.btnShraniArtikel);
         btnShraniArtikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,12 +107,6 @@ public class ArtikliActivity extends AppCompatActivity {
 
                 if (kolicina_artikla.isEmpty()) {
                     kolicinaArtikla.setError("Količina je zahtevana");
-                    kolicinaArtikla.requestFocus();
-                    return;
-                }
-
-                if (opis_artikla.isEmpty()) {
-                    kolicinaArtikla.setError("Opis je zahtevan");
                     kolicinaArtikla.requestFocus();
                     return;
                 }
@@ -147,9 +142,9 @@ public class ArtikliActivity extends AppCompatActivity {
                                 btnShraniArtikel.setEnabled(true);
                                 progressDialog.hide();
                                 Intent intent = new Intent(ArtikliActivity.this, SeznamArtiklovActivity.class);
-                                //intent.putExtra("id_artikla", id_artikla);
-                                intent.putExtra("id_kartice", id_kartice);
-                                startActivity(intent);
+                                intent.putExtra("artikelDodan", "da");
+                                setResult(CommonStatusCodes.SUCCESS, intent);
+                                finish();
                                 Toast.makeText(ArtikliActivity.this, "Artikel je bil uspešno dodan! ", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -161,10 +156,7 @@ public class ArtikliActivity extends AppCompatActivity {
                                 opisArtikla.setText("");
                                 btnShraniArtikel.setEnabled(true);
                                 progressDialog.hide();
-                                Intent intent = new Intent(ArtikliActivity.this, SeznamArtiklovActivity.class);
-                                //intent.putExtra("id_artikla", id_artikla);
-                                intent.putExtra("id_kartice", id_kartice);
-                                startActivity(intent);
+                                finish();
                                 Toast.makeText(ArtikliActivity.this, "Artikel ni bil dodan uspešno! ", Toast.LENGTH_SHORT).show();
                             }
                         });

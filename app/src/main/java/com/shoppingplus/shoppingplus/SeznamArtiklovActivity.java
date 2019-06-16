@@ -1,9 +1,11 @@
 package com.shoppingplus.shoppingplus;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -18,8 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,7 +43,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
     private Button dodajNovArtikel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView artikliRecyclerView;
-    private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
+    private ArrayList<Artikel> arrayArtikel = new ArrayList<>() ;
     private RecyclerViewAdapterArtikel adapter;
     private View mParentLayout;
 
@@ -77,9 +81,8 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layoutArtikli);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        Intent intent = getIntent();
-        //id_artikla = intent.getExtras().getString("id_artikla");
-        id_kartice = intent.getExtras().getString("id_kartice");
+        Globals g = Globals.getInstance();
+        id_kartice = g.getId_kartice();
 
         // sortiranje -----------------------------------------------------------------------------------------------------------------------------------------
         pref = this.getSharedPreferences("artikli_" + id_kartice, MODE_PRIVATE);
@@ -92,7 +95,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
                 Intent intent = new Intent(SeznamArtiklovActivity.this, ArtikliActivity.class);
                 //intent.putExtra("id_artikla", id_artikla);
                 intent.putExtra("id_kartice", id_kartice);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -176,6 +179,20 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sort, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==1) {
+            if(resultCode== CommonStatusCodes.SUCCESS) {
+                if(data != null) {
+                    if(data.getStringExtra("artikelDodan").equals("da"))
+                        getSeznamArtiklov();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

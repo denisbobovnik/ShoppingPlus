@@ -32,9 +32,9 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_podrobnosti_kartice);
 
-        imgSlika = (ImageView) findViewById(R.id.id_SlikaPodrobnostiKartice);
-        imgKoda = (ImageView) findViewById(R.id.id_SlikaSifrePodrobnostiKartice); //slika od kode, sifre
-        tvSifra = (TextView) findViewById(R.id.id_tvSifraPodrobnostiKartice);
+        imgSlika = findViewById(R.id.id_SlikaPodrobnostiKartice);
+        imgKoda = findViewById(R.id.id_SlikaSifrePodrobnostiKartice); //slika od kode, sifre
+        tvSifra = findViewById(R.id.id_tvSifraPodrobnostiKartice);
 
         // Recieve data
         Intent intent = getIntent();
@@ -59,7 +59,8 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PodrobnostiKarticeActivity.this, SeznamArtiklovActivity.class);
-                intent.putExtra("id_kartice", id_kartice);
+                Globals g = Globals.getInstance();
+                g.setId_kartice(id_kartice);
                 startActivity(intent);
             }
         });
