@@ -1,9 +1,12 @@
 package com.shoppingplus.shoppingplus;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SeznamArtiklovActivity extends AppCompatActivity {
 
@@ -42,6 +46,10 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
     String id_kartice;
     //String id_artikla;
 
+    // del za sortiranje ----------------------------------------------------------------------------------------------------------------------------------
+    SharedPreferences pref;
+    // ----------------------------------------------------------------------------------------------------------------------------------------------------
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -53,6 +61,10 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seznam_artiklov);
+
+        // sortiranje -----------------------------------------------------------------------------------------------------------------------------------------
+        pref = this.getSharedPreferences("MY_data", MODE_PRIVATE);
+        // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -84,9 +96,8 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
 
         mParentLayout = findViewById(android.R.id.content);
         artikliRecyclerView = findViewById(R.id.recyclerview_seznamArtiklov_id);
-        initRecyclerView();
+        //initRecyclerView();
         getSeznamArtiklov();
-
     }
 
     private void initRecyclerView(){
@@ -98,49 +109,54 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
         artikliRecyclerView.setAdapter(adapter);
     }
 
-    private void getSeznamArtiklov(){
+    private void getSeznamArtiklov() {
 
-        arrayArtikel.clear();
+        //arrayArtikel.clear();
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String mSortSettings = pref.getString("Uredi", "Od A do Ž - Asc");
+        if (mSortSettings.equals("Od A do Ž - Asc")) {
+            Collections.sort(arrayArtikel, Artikel.PO_NASLOVU_ASCENDING);
 
-        CollectionReference notesCollectionRef = db.collection("artikli");
-        notesCollectionRef.whereEqualTo("id_kartice", id_kartice).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    int steviloArtiklov  = task.getResult().size(); //
-                    //System.out.print(steviloArtiklov);
+        } else if (mSortSettings.equals("Od Ž do A - Desc")) {
+            Collections.sort(arrayArtikel, Artikel.PO_NASLOVU_DESCENDING);
+        }
 
-                    //Log.d(TAG, "Uspesno ste pridobili artikle");
-                    for(QueryDocumentSnapshot document: task.getResult()){
-                        //Log.d(TAG, document.getId() + ", " + document.get("id_kartice"));  ???
-                        Artikel artikel = new Artikel(document.get("naziv_artikla").toString(), document.get("kolicina_artikla").toString(), document.get("opis_artikla").toString()/*, document.get("status_artikla").toString(),id_artikla, */,id_kartice);
-                        //artikel.setId_artikla(document.getId());
-                        arrayArtikel.add(artikel);
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            CollectionReference notesCollectionRef = db.collection("artikli");
+            notesCollectionRef.whereEqualTo("id_kartice", id_kartice).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Artikel artikel = new Artikel(document.get("naziv_artikla").toString(), document.get("kolicina_artikla").toString(), document.get("opis_artikla").toString()/*, document.get("status_artikla").toString(),id_artikla, */, id_kartice);
+                            arrayArtikel.add(artikel);
+                        }
+                        adapter.notifyDataSetChanged();
+
+                    } else {
+                        makeSnackBarMessage("Query Failed. Check Logs.");
                     }
+                }
+            });
 
-                    adapter.notifyDataSetChanged();
-                }
-                else{
-                    makeSnackBarMessage("Query Failed. Check Logs.");
-                }
-            }
-        });
+            initRecyclerView();
+
     }
 
     private void makeSnackBarMessage(String message){
         Snackbar.make(mParentLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.editProfile) {
             Intent intent = new Intent(SeznamArtiklovActivity.this, ProfileActivity.class);
@@ -149,6 +165,55 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
             firebaseAuth.signOut();
         }
         return super.onOptionsItemSelected(item);
+    }*/
+
+    // sortiranje -------------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_sort, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.editProfile) {
+            Intent intent = new Intent(SeznamArtiklovActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        } else if(item.getItemId() == R.id.sort) {
+            prikaziUrejanje();
+            return true;
+        }
+        else { //logout
+            firebaseAuth.signOut();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void prikaziUrejanje(){
+        String [] izbira = {"Od A do Ž - Asc", "Od Ž do A - Desc"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Urejanje ");
+        builder.setIcon(R.drawable.ic_action_sort);
+        builder.setItems(izbira, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0){ // Asc je izbran
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("Uredi", "Od A do Ž - Asc"); // Uredi = ključ , Ascending = vrednost
+                    editor.apply();
+                    getSeznamArtiklov();
+                }
+                if(which == 1){ // Desc je izbran
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("Uredi", "Od Ž do A - Desc");
+                    editor.apply();
+                    getSeznamArtiklov();
+                }
+            }
+        });
+        builder.create().show();
+
+    }
+
 
 }

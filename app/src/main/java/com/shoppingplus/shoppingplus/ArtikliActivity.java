@@ -190,15 +190,15 @@ public class ArtikliActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onOptionsItemSelected(MenuItem item) {
-                if (item.getItemId() == R.id.editProfile) {
-                    Intent intent = new Intent(ArtikliActivity.this, ProfileActivity.class);
-                    startActivity(intent);
-                } else { //logout
-                    firebaseAuth.signOut();
-                }
-                return super.onOptionsItemSelected(item);
-            }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.editProfile) {
+            Intent intent = new Intent(ArtikliActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        } else { //logout
+            firebaseAuth.signOut();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 }

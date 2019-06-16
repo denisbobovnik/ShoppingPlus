@@ -1,4 +1,5 @@
 package com.shoppingplus.shoppingplus;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapterArtikel.MyViewHolder> {
 
@@ -35,7 +38,7 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
         final Artikel artikel = arrayArtikel.get(position);
 
@@ -43,20 +46,60 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         holder.kolicinaArtikla.setText(arrayArtikel.get(position).getKolicina_artikla());
         holder.opisArtikla.setText(arrayArtikel.get(position).getOpis_artikla());
 
-        /*holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
+        holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PodrobnostiArtiklaActivity.class);
-                intent.putExtra("Naziv_artikla", artikel.getNaziv_artikla());
+                //Intent intent = new Intent(context, PodrobnostiArtiklaActivity.class);
+                /*intent.putExtra("Naziv_artikla", artikel.getNaziv_artikla());
                 intent.putExtra("Kolicina_artikla", artikel.getKolicina_artikla());
                 intent.putExtra("Opis_artikla", artikel.getOpis_artikla());
-                intent.putExtra("Status_artikla", artikel.getStatus_artikla());
-                //intent.putExtra("id_artikla", artikel.getId_artikla());
-                intent.putExtra("id_kartice", artikel.getId_kartice());
-                context.startActivity(intent);
+                //intent.putExtra("Status_artikla", artikel.getStatus_artikla());
+                //intent.putExtra("id_artikla", artikel.getId_artikla());*/
+                //intent.putExtra("id_kartice", artikel.getId_kartice());
+                //context.startActivity(intent);
+
+                //Toast.makeText(context, "onClick + pozicija " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Za izbris je potrebno klikniti in držati artikel! ", Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
+
+        /* @Override
+        public void onLongClick(View v, int i) {
+            mquery.orderByChild("text")
+                    .equalTo((String) notes.get(i).getName())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChildren()) {
+                                DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
+                                firstChild.getRef().removeValue();
+                            }
+                        }
+
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });*/
+        holder.cardView_artikel.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+
+                //Toast.makeText(context, "onClick + pozicija " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Artikel je bil odstranjen", Toast.LENGTH_SHORT).show();
+                odstraniArtikel(arrayArtikel.get(position));
+
+                return true;
+            }
+        });
     }
+
+    private void odstraniArtikel(Artikel artikel){
+
+        int position = arrayArtikel.indexOf(artikel);
+        arrayArtikel.remove(position);
+        notifyItemRemoved(position);
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -81,4 +124,8 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
             //artikel_item_id = (LinearLayout) itemView.findViewById(R.id.artikel_item_id);
         }
     }
+
+
+
+
 }

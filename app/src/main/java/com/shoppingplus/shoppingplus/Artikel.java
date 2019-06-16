@@ -1,5 +1,7 @@
 package com.shoppingplus.shoppingplus;
 
+import java.util.Comparator;
+
 public class Artikel {
 
     private String naziv_artikla;
@@ -39,4 +41,23 @@ public class Artikel {
     public void setId_artikla(String id_artikla) { this.id_artikla = id_artikla; }*/
     public String getId_kartice() { return id_kartice; }
     public void setId_kartice(String id_kartice) { this.id_kartice = id_kartice; }
+
+   // del za sortiranje - Asc, Desc
+    public static final Comparator<Artikel> PO_NASLOVU_ASCENDING = new Comparator<Artikel>() {
+       @Override
+       public int compare(Artikel o1, Artikel o2) {
+
+           return o1.getNaziv_artikla().compareTo(o2.getNaziv_artikla());
+       }
+   };
+
+    public static final Comparator<Artikel> PO_NASLOVU_DESCENDING = new Comparator<Artikel>() {
+        @Override
+        public int compare(Artikel o1, Artikel o2) {
+
+            return o2.getNaziv_artikla().compareTo(o1.getNaziv_artikla());
+        }
+    };
+
+
 }

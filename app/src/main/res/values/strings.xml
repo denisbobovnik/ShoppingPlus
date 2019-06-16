@@ -115,5 +115,6 @@
     <string name="databaseKolicinaArtikla">Količina:</string>
     <string name="databaseOpisArtikla">Dodaten opis: </string>
     <string name="databaseStatusArtikla">Ali je izdelek že v košarici: </string>
+    <string name="sort">Uredi artikle po ...  </string>
 
 </resources>
