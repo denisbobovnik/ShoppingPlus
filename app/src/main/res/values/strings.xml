@@ -117,5 +117,9 @@
     <string name="databaseOpisArtikla">Dodaten opis: </string>
     <string name="databaseStatusArtikla">Ali je izdelek že v košarici: </string>
     <string name="sort">Sortiraj</string>
+    <string name="koli_ina_naziv_opis">Količina: Naziv: Opis:</string>
+    <string name="opis">Opis:</string>
+    <string name="naziv">Naziv:</string>
+    <string name="koli_ina">Količina:</string>
 
 </resources>

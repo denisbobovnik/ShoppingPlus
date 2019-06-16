@@ -31,13 +31,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SeznamArtiklovActivity extends AppCompatActivity {
+public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private static final String TAG = "SeznamArtiklovActivity";
     private Button dodajNovArtikel;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView artikliRecyclerView;
     private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>() ;
     private RecyclerViewAdapterArtikel adapter;
@@ -74,6 +74,8 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
             }
         };
 
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layoutArtikli);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         Intent intent = getIntent();
         //id_artikla = intent.getExtras().getString("id_artikla");
@@ -217,5 +219,9 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onRefresh() {
+        getSeznamArtiklov();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 }

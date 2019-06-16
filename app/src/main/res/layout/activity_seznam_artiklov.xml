@@ -6,73 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".SeznamArtiklovActivity"
     android:orientation="vertical"-->
-<ScrollView
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".SeznamArtiklovActivity"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/seznamArtiklov"
-            android:textSize="24sp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="380dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="380dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="     Količina:          Naziv:                Opis:"
-            android:textSize="19sp" />
-        <!--android.support.v4.widget.SwipeRefreshLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/swipe_refresh_layout2"-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_seznamArtiklov_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:paddingBottom="48dp"
-        android:clipToPadding="false">
-
-        <!--/android.support.v4.widget.SwipeRefreshLayout-->
-    </android.support.v7.widget.RecyclerView>
+    android:layout_height="match_parent"
+    tools:context=".SeznamArtiklovActivity">
 
     <Button
         android:id="@+id/btnDodajArtikel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:text="@string/gumbDodajArtikel" />
 
-<!--/android.support.design.widget.CoordinatorLayout-->
-    </LinearLayout>
-</ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/seznamArtiklov"
+                android:textSize="24sp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_marginTop="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp"
+                android:layout_width="wrap_content"
+                android:text="@string/koli_ina"
+                android:textSize="19sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40sp"
+                android:text="@string/naziv"
+                android:layout_width="wrap_content"
+                android:textSize="19sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50sp"
+                android:text="@string/opis"
+                android:textSize="19sp"
+                android:layout_width="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/swipe_refresh_layoutArtikli">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_seznamArtiklov_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
