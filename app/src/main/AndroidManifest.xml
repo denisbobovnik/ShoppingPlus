@@ -97,7 +97,9 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".GoogleMapsSearch" />
+        <activity
+            android:name=".GoogleMapsSearch"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".PodrobnostiKarticeActivity"
@@ -105,15 +107,15 @@
 
         <activity
             android:name=".SeznamArtiklovActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ArtikliActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".PodrobnostiArtiklaActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
     </application>
 
