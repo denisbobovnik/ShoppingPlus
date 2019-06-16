@@ -113,8 +113,6 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
 
         arrayArtikel.clear();
 
-
-
             FirebaseUser user = firebaseAuth.getCurrentUser();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -130,11 +128,11 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
                             arrayArtikel.add(artikel);
                         }
 
-                        String mSortSettings = pref.getString("Uredi", "Od A do Ž - Asc");
-                        if (mSortSettings.equals("Od A do Ž - Asc")) {
+                        String mSortSettings = pref.getString("Uredi", "Od A do Ž");
+                        if (mSortSettings.equals("Od A do Ž")) {
                             Collections.sort(arrayArtikel, Artikel.PO_NASLOVU_ASCENDING);
 
-                        } else if (mSortSettings.equals("Od Ž do A - Desc")) {
+                        } else if (mSortSettings.equals("Od Ž do A")) {
                             Collections.sort(arrayArtikel, Artikel.PO_NASLOVU_DESCENDING);
                         }
 
@@ -194,7 +192,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity {
     }
 
     public void prikaziUrejanje(){
-        String [] izbira = {"Od A do Ž - Asc", "Od Ž do A - Desc"};
+        String [] izbira = {"Od A do Ž", "Od Ž do A"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Urejanje ");
         builder.setIcon(R.drawable.ic_action_sort);
