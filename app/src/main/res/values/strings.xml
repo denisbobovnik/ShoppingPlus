@@ -100,6 +100,7 @@
     <string name="gumbZemljevid">Trgovine</string>
     <string name="kartice">Kartice</string>
     <string name="map_key" translatable="false">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
+    <string name="slika_kartice">Slika kartice</string>
     <!--**************************:-->
     <string name="seznamArtiklov">Seznam artiklov </string>
     <string name="dodajArtikel">Dopolni seznam:</string>
