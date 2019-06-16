@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    private ArrayList<Kartica> arrayKartica = new ArrayList<Kartica>() ;
+    private ArrayList<Kartica> arrayKartica;
     private Context mContext;
 
     public RecyclerViewAdapter(Context context, ArrayList<Kartica> kartica) {
@@ -53,6 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("Tip_sifre",kartica.getTip_sifre());
                 intent.putExtra("Sifra",kartica.getSifra_kartice());
                 intent.putExtra("id_kartice", kartica.getId_kartice());
+                intent.putExtra("naziv_trgovine", kartica.getNaziv_trgovine());
                // intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
                 // start the activity
                 mContext.startActivity(intent);
@@ -74,8 +75,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public MyViewHolder(View itemView) {
             super(itemView);
             //textViewName = itemView.findViewById(R.id.kartica_naslov_id);
-            slika_kartice = (ImageView) itemView.findViewById(R.id.kartica_slika_id);
-            cardView = (CardView) itemView.findViewById(R.id.cardview_id);
+            slika_kartice = itemView.findViewById(R.id.kartica_slika_id);
+            cardView = itemView.findViewById(R.id.cardview_id);
         }
     }
 }

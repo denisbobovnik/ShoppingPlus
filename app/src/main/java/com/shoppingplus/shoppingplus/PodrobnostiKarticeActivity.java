@@ -24,7 +24,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
 
     private ImageView imgSlika;
     private ImageView imgKoda; //za pridobitev tipa sifre
-    private TextView tvSifra;
+    private TextView tvSifra, nazivTrgovine;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -35,12 +35,14 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         imgSlika = findViewById(R.id.id_SlikaPodrobnostiKartice);
         imgKoda = findViewById(R.id.id_SlikaSifrePodrobnostiKartice); //slika od kode, sifre
         tvSifra = findViewById(R.id.id_tvSifraPodrobnostiKartice);
+        nazivTrgovine = findViewById(R.id.nazivTrgovine);
 
         // Recieve data
         Intent intent = getIntent();
         String Slika = intent.getExtras().getString("Slika") ;
         String Koda = intent.getExtras().getString("Tip_sifre") ; //tip sifre
         String Sifra = intent.getExtras().getString("Sifra");
+        String naziv_trgovine = intent.getExtras().getString("naziv_trgovine");
         final String id_kartice = intent.getExtras().getString("id_kartice");
 
         // Setting values
@@ -49,6 +51,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
                 .into(imgSlika);
 
         tvSifra.setText(Sifra);
+        nazivTrgovine.setText(naziv_trgovine);
 
         firebaseAuth = FirebaseAuth.getInstance();
 

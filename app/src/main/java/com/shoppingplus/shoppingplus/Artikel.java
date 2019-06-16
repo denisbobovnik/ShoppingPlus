@@ -43,7 +43,7 @@ public class Artikel {
        @Override
        public int compare(Artikel o1, Artikel o2) {
 
-           return o1.getNaziv_artikla().compareTo(o2.getNaziv_artikla());
+           return o1.getNaziv_artikla().compareToIgnoreCase(o2.getNaziv_artikla());
        }
    };
 
@@ -51,7 +51,7 @@ public class Artikel {
         @Override
         public int compare(Artikel o1, Artikel o2) {
 
-            return o2.getNaziv_artikla().compareTo(o1.getNaziv_artikla());
+            return o2.getNaziv_artikla().compareToIgnoreCase(o1.getNaziv_artikla());
         }
     };
 

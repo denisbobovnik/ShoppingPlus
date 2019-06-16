@@ -203,8 +203,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
         } else if(item.getItemId() == R.id.sort) {
             prikaziUrejanje();
             return true;
-        }
-        else { //logout
+        } else { //logout
             firebaseAuth.signOut();
         }
         return super.onOptionsItemSelected(item);
@@ -213,7 +212,7 @@ public class SeznamArtiklovActivity extends AppCompatActivity implements SwipeRe
     public void prikaziUrejanje(){
         String [] izbira = {"Od A do Ž", "Od Ž do A"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Urejanje ");
+        builder.setTitle("Sortiraj");
         builder.setIcon(R.drawable.ic_action_sort);
         builder.setItems(izbira, new DialogInterface.OnClickListener() {
             @Override

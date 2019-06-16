@@ -1,5 +1,7 @@
 package com.shoppingplus.shoppingplus;
 
+import java.util.Comparator;
+
 public class Kartica {
     private String id_uporabnika;
     private String naziv_trgovine;
@@ -72,4 +74,20 @@ public class Kartica {
     public void setId_kartice(String id_kartice) {
         this.id_kartice = id_kartice;
     }
+
+    public static final Comparator<Kartica> PO_NAZIVU_ASCENDING = new Comparator<Kartica>() {
+        @Override
+        public int compare(Kartica o1, Kartica o2) {
+
+            return o1.getNaziv_trgovine().compareToIgnoreCase(o2.getNaziv_trgovine());
+        }
+    };
+
+    public static final Comparator<Kartica> PO_NAZIVU_DESCENDING = new Comparator<Kartica>() {
+        @Override
+        public int compare(Kartica o1, Kartica o2) {
+
+            return o2.getNaziv_trgovine().compareToIgnoreCase(o1.getNaziv_trgovine());
+        }
+    };
 }

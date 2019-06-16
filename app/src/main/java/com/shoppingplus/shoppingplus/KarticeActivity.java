@@ -1,11 +1,14 @@
 package com.shoppingplus.shoppingplus;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -57,6 +61,7 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
     private RecyclerViewAdapter adapter;
     private DocumentSnapshot mLastQueriedDocument;
     private View mParentLayout;
+    SharedPreferences pref;
     //*************************************
 
     @Override
@@ -83,6 +88,8 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
             }
         };
 
+        pref = this.getSharedPreferences("karticeSort", MODE_PRIVATE);
+
         fabDodajKartico = findViewById(R.id.fabDodajKartico);
         fabDodajKartico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +113,7 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_sort, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -115,6 +122,9 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
         if(item.getItemId()==R.id.editProfile) {
             Intent intent = new Intent(KarticeActivity.this, ProfileActivity.class);
             startActivity(intent);
+        } else if(item.getItemId() == R.id.sort) {
+            prikaziUrejanje();
+            return true;
         } else { //logout
             firebaseAuth.signOut();
         }
@@ -127,6 +137,32 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
         getSeznamKartic();
         mSwipeRefreshLayout.setRefreshing(false);
     }*/
+
+    public void prikaziUrejanje(){
+        String [] izbira = {"Od A do Ž", "Od Ž do A"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sortiraj");
+        builder.setIcon(R.drawable.ic_action_sort);
+        builder.setItems(izbira, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0){ // Asc je izbran
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("Uredi", "Od A do Ž"); // Uredi = ključ , Ascending = vrednost
+                    editor.apply();
+                    getSeznamKartic();
+                }
+                if(which == 1){ // Desc je izbran
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("Uredi", "Od Ž do A");
+                    editor.apply();
+                    getSeznamKartic();
+                }
+            }
+        });
+        builder.create().show();
+
+    }
 
     private void initRecyclerView(){
         if(adapter == null){
@@ -162,6 +198,15 @@ public class KarticeActivity extends AppCompatActivity implements SwipeRefreshLa
                         kartica.setId_kartice(document.getId());
                         arrayKartica.add(kartica);
                     }
+
+                    String mSortSettings = pref.getString("Uredi", "Od A do Ž");
+                    if (mSortSettings.equals("Od A do Ž")) {
+                        Collections.sort(arrayKartica, Kartica.PO_NAZIVU_ASCENDING);
+
+                    } else if (mSortSettings.equals("Od Ž do A")) {
+                        Collections.sort(arrayKartica, Kartica.PO_NAZIVU_DESCENDING);
+                    }
+
                     adapter.notifyDataSetChanged();
                 }
                 else{
