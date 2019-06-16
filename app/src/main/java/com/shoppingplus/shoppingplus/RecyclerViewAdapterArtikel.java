@@ -13,6 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,28 +69,29 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
             }
         });
 
-        /* @Override
-        public void onLongClick(View v, int i) {
-            mquery.orderByChild("text")
-                    .equalTo((String) notes.get(i).getName())
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChildren()) {
-                                DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
-                                firstChild.getRef().removeValue();
-                            }
-                        }
-
-                        public void onCancelled(FirebaseError firebaseError) {
-                        }
-                    });*/
         holder.cardView_artikel.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                CollectionReference notesCollectionRef = db.collection("artikli");
+                notesCollectionRef.document(artikel.getId_artikla())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(context, "Artikel uspešno izbrisan! ", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "Artikla ni bilo mogoče izbrisati! ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                 //Toast.makeText(context, "onClick + pozicija " + position, Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "Artikel je bil odstranjen", Toast.LENGTH_SHORT).show();
                 odstraniArtikel(arrayArtikel.get(position));
 
                 return true;
