@@ -27,7 +27,7 @@ import java.util.List;
 
 public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapterArtikel.MyViewHolder> {
 
-    private ArrayList<Artikel> arrayArtikel = new ArrayList<Artikel>();
+    private ArrayList<Artikel> arrayArtikel;
     private Context context;
 
     public RecyclerViewAdapterArtikel(Context context, ArrayList<Artikel> artikel) {
@@ -55,7 +55,6 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(context, PodrobnostiArtiklaActivity.class);
                 /*intent.putExtra("Naziv_artikla", artikel.getNaziv_artikla());
                 intent.putExtra("Kolicina_artikla", artikel.getKolicina_artikla());
                 intent.putExtra("Opis_artikla", artikel.getOpis_artikla());
@@ -123,12 +122,10 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            nazivArtikla = (TextView) itemView.findViewById(R.id.rvNazivArtikla);
-            kolicinaArtikla = (TextView) itemView.findViewById(R.id.rvKolicinaArtikla);
-            opisArtikla = (TextView) itemView.findViewById(R.id.rvOpisArtikla);
-
-            cardView_artikel = (CardView) itemView.findViewById(R.id.cardview_artikel_id);
-            //artikel_item_id = (LinearLayout) itemView.findViewById(R.id.artikel_item_id);
+            nazivArtikla = itemView.findViewById(R.id.rvNazivArtikla);
+            kolicinaArtikla = itemView.findViewById(R.id.rvKolicinaArtikla);
+            opisArtikla = itemView.findViewById(R.id.rvOpisArtikla);
+            cardView_artikel = itemView.findViewById(R.id.cardview_artikel_id);
         }
     }
 

@@ -72,7 +72,8 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         gumbZemljevid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), GoogleMapsSearch.class);
+            //    Intent intent = new Intent(view.getContext(), GoogleMapsSearch.class);
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
                 startActivity(intent);
             }
         });

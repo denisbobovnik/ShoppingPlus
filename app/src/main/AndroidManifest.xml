@@ -5,10 +5,11 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- PETRA DODALA***********: -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- ************************** -->
     <application
@@ -100,23 +101,18 @@
         <activity
             android:name=".GoogleMapsSearch"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".PodrobnostiKarticeActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SeznamArtiklovActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ArtikliActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".PodrobnostiArtiklaActivity"
-            android:screenOrientation="portrait" />
-
+            android:name=".MapsActivity" android:screenOrientation="portrait"
+            android:label="@string/title_activity_maps" />
     </application>
 
 </manifest>

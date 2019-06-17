@@ -83,8 +83,12 @@
     <string name="betaWarning">Opozorilo BETA</string>
     <string name="betaDetails">Funkcija je v stanju beta! Obstajajo znane napake, ki se bodo odpravile v prihodnjih različicah.</string>
     <string name="noCameraPermission">Aplikacija nima dovoljenja za uporabo kamere!</string>
+    <string name="noLocationPermission">Aplikacija nima dovoljenja za uporabo lokacije!</string>
+    <string name="noStoragePermission">Aplikacija nima dovoljenja za uporabo shrambe!</string>
     <string name="noBarcodeScanned">Ni najdene številke kartice!</string>
+    <string name="storagePermissionGranted">Dovoljenje za shrambo pridobljeno!</string>
     <string name="cameraPermissionGranted">Dovoljenje za kamero pridobljeno!</string>
+    <string name="locationPermissionGranted">Dovoljenje za lokacijo pridobljeno!</string>
     <string name="manualEntry">Vnesi ročno</string>
     <string name="addCard">Dodaj kartico</string>
     <string name="stevilkaKartice">Številka kartice</string>
@@ -99,7 +103,7 @@
     <string name="gumbSeznamArtiklov">Nakupovalni seznam</string>
     <string name="gumbZemljevid">Trgovine</string>
     <string name="kartice">Kartice</string>
-    <string name="map_key" translatable="false">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
+    <string name="map_key" translatable="false">AIzaSyDb6aP675ehmAJ3rF5KQKi-kU0-Axm9m98</string>
     <string name="slika_kartice">Slika kartice</string>
     <!--**************************:-->
     <string name="seznamArtiklov">Seznam artiklov </string>
@@ -121,5 +125,6 @@
     <string name="opis">Opis:</string>
     <string name="naziv">Naziv:</string>
     <string name="koli_ina">Količina:</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

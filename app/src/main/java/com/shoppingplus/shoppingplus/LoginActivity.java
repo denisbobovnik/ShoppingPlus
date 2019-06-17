@@ -48,9 +48,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.ProviderQueryResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private int CAMERA_PERMISSION_CODE = 200;
+    public static final int MULTIPLE_PERMISSIONS_CODE = 400;
+    String[] permissions= new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE};
     private EditText etEmailLog;
     private EditText etPasswordLog;
     private Button btnLoginLog;
@@ -70,18 +74,56 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
 
-        if(ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p:permissions) {
+            result = ContextCompat.checkSelfPermission(LoginActivity.this,p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MULTIPLE_PERMISSIONS_CODE);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == CAMERA_PERMISSION_CODE) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                Toast.makeText(this, getResources().getString(R.string.cameraPermissionGranted), Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, getResources().getString(R.string.noCameraPermission), Toast.LENGTH_SHORT).show();
+        if(requestCode == MULTIPLE_PERMISSIONS_CODE) {
+            if (grantResults.length > 0) {
+                String permissionsDenied = "";
+                for (String per : permissions) {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                        String manjkajoceDovoljenje = "";
+                        switch (per) {
+                            case Manifest.permission.CAMERA:
+                                manjkajoceDovoljenje = getResources().getString(R.string.noCameraPermission);
+                                break;
+                            case Manifest.permission.ACCESS_FINE_LOCATION:
+                                manjkajoceDovoljenje = getResources().getString(R.string.noLocationPermission);
+                                break;
+                            case Manifest.permission.READ_EXTERNAL_STORAGE:
+                                manjkajoceDovoljenje = getResources().getString(R.string.noStoragePermission);
+                                break;
+                        }
+                        Toast.makeText(this, manjkajoceDovoljenje, Toast.LENGTH_SHORT).show();
+                    } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        String pridobljenoDovoljenje = "";
+                        switch (per) {
+                            case Manifest.permission.CAMERA:
+                                pridobljenoDovoljenje = getResources().getString(R.string.cameraPermissionGranted);
+                                break;
+                            case Manifest.permission.ACCESS_FINE_LOCATION:
+                                pridobljenoDovoljenje = getResources().getString(R.string.locationPermissionGranted);
+                                break;
+                            case Manifest.permission.READ_EXTERNAL_STORAGE:
+                                pridobljenoDovoljenje = getResources().getString(R.string.storagePermissionGranted);
+                                break;
+                        }
+                        Toast.makeText(this, pridobljenoDovoljenje, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         }
     }
 
@@ -131,10 +173,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        etEmailLog = (EditText) findViewById(R.id.etEmailLog);
-        etPasswordLog = (EditText) findViewById(R.id.etPasswordLog);
+        etEmailLog = findViewById(R.id.etEmailLog);
+        etPasswordLog = findViewById(R.id.etPasswordLog);
 
-        tvCreateAccLog = (TextView) findViewById(R.id.tvCreateAccLog);
+        tvCreateAccLog = findViewById(R.id.tvCreateAccLog);
         tvCreateAccLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvForgotPassword = (TextView) findViewById(R.id.tvForgotPassword);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnLoginLog = (Button) findViewById(R.id.btnLoginLog);
+        btnLoginLog = findViewById(R.id.btnLoginLog);
         btnLoginLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        sibGoogle = (SignInButton) findViewById(R.id.sibGoogle);
+        sibGoogle = findViewById(R.id.sibGoogle);
         sibGoogle.setSize(SignInButton.SIZE_STANDARD);
         sibGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
