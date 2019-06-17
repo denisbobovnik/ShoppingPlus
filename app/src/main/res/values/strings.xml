@@ -121,6 +121,7 @@
     <string name="databaseOpisArtikla">Dodaten opis: </string>
     <string name="databaseStatusArtikla">Ali je izdelek že v košarici: </string>
     <string name="sort">Sortiraj</string>
+    <string name="razdaljaRequired">Razdalja je obvezna! (privzeto je 30km)</string>
     <string name="koli_ina_naziv_opis">Količina: Naziv: Opis:</string>
     <string name="opis">Opis:</string>
     <string name="naziv">Naziv:</string>
@@ -128,4 +129,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="niGooglePlayStoritev">Storitve Google Play niso na voljo!</string>
     <string name="osve_i">Osveži</string>
+    <string name="razdalja_v_km">Razdalja (v km)</string>
+    <string name="razdaljaNeSmeBitiNegativna">Razdalja ne sme biti negativna!</string>
+    <string name="nepravilenFormatRazdalje">Nepravilen format razdalje!</string>
 </resources>

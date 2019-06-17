@@ -3,6 +3,7 @@ package com.shoppingplus.shoppingplus;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +31,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,7 +42,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     double latitude;
     double longitude;
-    private int PROXIMITY_RADIUS = 10000;
+    private double PROXIMITY_RADIUS = 30000; //privzeto 30km odmika
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private GoogleMap mMap;
@@ -47,6 +51,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
     private String naziv_trgovine;
+    private Button btnOsvezi;
+    private EditText razdaljaKM;
 
     @Override
     protected void onStart() {
@@ -85,10 +91,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        Button btnOsvezi = findViewById(R.id.btnOsvezi);
+        razdaljaKM = findViewById(R.id.razdaljaKM);
+
+        btnOsvezi = findViewById(R.id.btnOsvezi);
         btnOsvezi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String vnesenaRazdalja = razdaljaKM.getText().toString().trim();
+
+                if(vnesenaRazdalja.isEmpty()) {
+                    razdaljaKM.setError(getResources().getString(R.string.razdaljaRequired));
+                    razdaljaKM.requestFocus();
+                    return;
+                }
+
+                try {
+                    PROXIMITY_RADIUS = Double.parseDouble(vnesenaRazdalja) * 1000;
+                    if(PROXIMITY_RADIUS<0) {
+                        razdaljaKM.setError(getResources().getString(R.string.razdaljaNeSmeBitiNegativna));
+                        razdaljaKM.requestFocus();
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    razdaljaKM.setError(getResources().getString(R.string.nepravilenFormatRazdalje));
+                    razdaljaKM.requestFocus();
+                    return;
+                }
+
+                razdaljaKM.setText("");
+
                 osveziMarkerje();
             }
         });
@@ -116,7 +148,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
-        googlePlacesUrl.append("&type=" + nearbyPlace);
+        googlePlacesUrl.append("&keyword=" + nearbyPlace);
+    //    googlePlacesUrl.append("&name=" + nearbyPlace);
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key=" + "AIzaSyATuUiZUkEc_UgHuqsBJa1oqaODI-3mLs0");
         Log.d("getUrl", googlePlacesUrl.toString());
@@ -136,7 +169,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();

@@ -17,16 +17,33 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:layout_height="match_parent"
     tools:context=".MapsActivity" />
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnOsvezi"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="@string/osve_i" />
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <EditText
+            android:layout_width="280sp"
+            android:id="@+id/razdaljaKM"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:layout_height="40sp"
+            android:hint="@string/razdalja_v_km"
+            android:layout_gravity="bottom"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/btnOsvezi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/osve_i" />
+
+    </LinearLayout>
+
+
+
+
 </FrameLayout>
