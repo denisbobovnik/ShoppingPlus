@@ -52,10 +52,10 @@ public class ScanActivity extends AppCompatActivity {
             }
         };
 
-        svKamera = (SurfaceView) findViewById(R.id.svKamera);
+        svKamera = findViewById(R.id.svKamera);
         ustvariVirKamere();
 
-        btnManualEntry = (Button) findViewById(R.id.btnManualEntry);
+        btnManualEntry = findViewById(R.id.btnManualEntry);
         btnManualEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

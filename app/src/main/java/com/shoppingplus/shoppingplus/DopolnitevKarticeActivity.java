@@ -29,9 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -42,10 +40,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -152,9 +146,9 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<StaticnaTrgovina> trgovine = new ArrayList<StaticnaTrgovina>();
+                            List<StaticnaTrgovina> trgovine = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult())
-                                trgovine.add(new StaticnaTrgovina((String) document.get("naziv_trgovine"), (String) document.getString("url_slike")));
+                                trgovine.add(new StaticnaTrgovina((String) document.get("naziv_trgovine"), document.getString("url_slike")));
 
                             String[] imenaTrgovin = new String[trgovine.size()];
                             for(int i=0; i<trgovine.size(); i++)
@@ -162,7 +156,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
 
                             nastaviGlobalno(trgovine);
 
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(DopolnitevKarticeActivity.this, android.R.layout.simple_spinner_item, imenaTrgovin);
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(DopolnitevKarticeActivity.this, android.R.layout.simple_spinner_item, imenaTrgovin);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinStaticStores.setAdapter(adapter);
                             spinStaticStores.setOnItemSelectedListener(DopolnitevKarticeActivity.this);
@@ -174,7 +168,7 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
     }
 
     private void nastaviGlobalno(List<StaticnaTrgovina> trgovine) {
-        staticneTrgovine = new ArrayList<StaticnaTrgovina>();
+        staticneTrgovine = new ArrayList<>();
         for(StaticnaTrgovina s : trgovine)
             staticneTrgovine.add(s);
     }
@@ -215,13 +209,11 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
 
         //potrditev veljavnosti vnosov
         if(stevilka_kartice.isEmpty()) {
-            //etStevilkaKartice.setError("Številka kartice je zahtevana!");
             etStevilkaKartice.setError(getResources().getString(R.string.stevilkaKarticeRequired));
             etStevilkaKartice.requestFocus();
             return;
         }
         if(ime_trgovine.isEmpty()) {
-            //etImeTrgovine.setError("Naziv trgovine je zahtevan!");
             etImeTrgovine.setError(getResources().getString(R.string.imeTrgovineRequired));
             etImeTrgovine.requestFocus();
             return;

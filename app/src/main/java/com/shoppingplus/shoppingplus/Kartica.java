@@ -66,11 +66,9 @@ public class Kartica {
     public void setTip_sifre(String tip_sifre) {
         this.tip_sifre = tip_sifre;
     }
-
     public String getId_kartice() {
         return id_kartice;
     }
-
     public void setId_kartice(String id_kartice) {
         this.id_kartice = id_kartice;
     }
@@ -78,7 +76,6 @@ public class Kartica {
     public static final Comparator<Kartica> PO_NAZIVU_ASCENDING = new Comparator<Kartica>() {
         @Override
         public int compare(Kartica o1, Kartica o2) {
-
             return o1.getNaziv_trgovine().compareToIgnoreCase(o2.getNaziv_trgovine());
         }
     };
@@ -86,7 +83,6 @@ public class Kartica {
     public static final Comparator<Kartica> PO_NAZIVU_DESCENDING = new Comparator<Kartica>() {
         @Override
         public int compare(Kartica o1, Kartica o2) {
-
             return o2.getNaziv_trgovine().compareToIgnoreCase(o1.getNaziv_trgovine());
         }
     };

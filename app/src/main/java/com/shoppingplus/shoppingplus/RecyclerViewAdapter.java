@@ -1,4 +1,5 @@
 package com.shoppingplus.shoppingplus;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -8,12 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
@@ -38,7 +35,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         final Kartica kartica = arrayKartica.get(position);
 
-        //holder.textViewName.setText(kartica.getNaziv_trgovine());
        Picasso.get()
                 .load(kartica.getUrl_slike())
                 .into(holder.slika_kartice);
@@ -47,15 +43,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext,PodrobnostiKarticeActivity.class);
-                // passing data to the PodrobnostiKartice activity
                 intent.putExtra("Slika",kartica.getUrl_slike());
-                //tip sifre za prikaz kode
                 intent.putExtra("Tip_sifre",kartica.getTip_sifre());
                 intent.putExtra("Sifra",kartica.getSifra_kartice());
                 intent.putExtra("id_kartice", kartica.getId_kartice());
                 intent.putExtra("naziv_trgovine", kartica.getNaziv_trgovine());
-               // intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
-                // start the activity
                 mContext.startActivity(intent);
             }
         });
@@ -66,15 +58,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return arrayKartica.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        //TextView textViewName;
         ImageView slika_kartice;
         CardView cardView ;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            //textViewName = itemView.findViewById(R.id.kartica_naslov_id);
             slika_kartice = itemView.findViewById(R.id.kartica_slika_id);
             cardView = itemView.findViewById(R.id.cardview_id);
         }

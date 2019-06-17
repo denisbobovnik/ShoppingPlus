@@ -1,29 +1,19 @@
 package com.shoppingplus.shoppingplus;
-import android.app.DownloadManager;
+
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerViewAdapterArtikel.MyViewHolder> {
 
@@ -55,15 +45,6 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         holder.cardView_artikel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*intent.putExtra("Naziv_artikla", artikel.getNaziv_artikla());
-                intent.putExtra("Kolicina_artikla", artikel.getKolicina_artikla());
-                intent.putExtra("Opis_artikla", artikel.getOpis_artikla());
-                //intent.putExtra("Status_artikla", artikel.getStatus_artikla());
-                //intent.putExtra("id_artikla", artikel.getId_artikla());*/
-                //intent.putExtra("id_kartice", artikel.getId_kartice());
-                //context.startActivity(intent);
-
-                //Toast.makeText(context, "onClick + pozicija " + position, Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "Za izbris je potrebno klikniti in držati artikel! ", Toast.LENGTH_SHORT).show();
             }
         });
@@ -90,22 +71,17 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
                             }
                         });
 
-                //Toast.makeText(context, "onClick + pozicija " + position, Toast.LENGTH_SHORT).show();
                 odstraniArtikel(arrayArtikel.get(position));
-
                 return true;
             }
         });
     }
 
     private void odstraniArtikel(Artikel artikel){
-
         int position = arrayArtikel.indexOf(artikel);
         arrayArtikel.remove(position);
         notifyItemRemoved(position);
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -118,7 +94,6 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
         private TextView kolicinaArtikla;
         private TextView opisArtikla;
         CardView cardView_artikel ;
-        //private LinearLayout artikel_item_id ;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -128,8 +103,4 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
             cardView_artikel = itemView.findViewById(R.id.cardview_artikel_id);
         }
     }
-
-
-
-
 }

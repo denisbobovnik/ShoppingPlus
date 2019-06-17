@@ -1,6 +1,7 @@
 package com.shoppingplus.shoppingplus;
 
 public class StaticnaTrgovina {
+
     private String naziv_trgovine;
     private String url_slike;
 

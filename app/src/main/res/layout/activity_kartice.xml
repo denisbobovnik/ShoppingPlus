@@ -31,7 +31,6 @@
             android:textAlignment="center"
             android:textSize="20sp" />
 
-        <!-- PETRA **********************************-->
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,18 +44,4 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
-
-
-    <!-- **********************-->
-
-
-    <!--DODALA ZA TEST DA PRIDEM NA ZEMLJEVID KAR S TEM GUMBOM: **********************-->
-    <!--<Button
-        android:id="@+id/gumbZemljevid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />-->
-
-    <!--******************************************-->
-
 </android.support.design.widget.CoordinatorLayout>

@@ -1,7 +1,5 @@
 package com.shoppingplus.shoppingplus;
 
-import java.util.ArrayList;
-
 public class Globals {
 
     private String id_kartice;

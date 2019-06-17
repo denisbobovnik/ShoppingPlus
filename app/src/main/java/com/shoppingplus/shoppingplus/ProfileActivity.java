@@ -4,10 +4,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.auth.UserInfo;
@@ -91,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         };
 
-        tvVerified = (TextView) findViewById(R.id.tvVerified);
+        tvVerified = findViewById(R.id.tvVerified);
         final FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user.isEmailVerified()) {
             tvVerified.setText(getResources().getString(R.string.emailVerified));
@@ -112,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
-        btnDeleteAccount = (Button) findViewById(R.id.btnDeleteAccount);
+        btnDeleteAccount = findViewById(R.id.btnDeleteAccount);
         btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        btnChangeEmail = (Button) findViewById(R.id.btnChangeEmail);
+        btnChangeEmail = findViewById(R.id.btnChangeEmail);
         btnChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        btnChangePassword = (Button) findViewById(R.id.btnChangePassword);
+        btnChangePassword = findViewById(R.id.btnChangePassword);
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,11 +133,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        passwordNewValue = (EditText) findViewById(R.id.passwordNewValue);
-        passwordNewValueRepeat = (EditText) findViewById(R.id.passwordNewValueRepeat);
+        passwordNewValue = findViewById(R.id.passwordNewValue);
+        passwordNewValueRepeat = findViewById(R.id.passwordNewValueRepeat);
 
 
-        emailValue = (TextView) findViewById(R.id.emailValue);
+        emailValue = findViewById(R.id.emailValue);
         emailValue.setText(user.getEmail());
         for(UserInfo userInfo : firebaseAuth.getCurrentUser().getProviderData()) {
             if((userInfo.getProviderId().equals("facebook.com"))||(userInfo.getProviderId().equals("google.com"))) {

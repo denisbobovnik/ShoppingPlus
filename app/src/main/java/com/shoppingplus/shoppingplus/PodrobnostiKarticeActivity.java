@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.BarcodeFormat;
@@ -55,7 +54,6 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //****************************************
         //za gumb ki preusmeri na seznam artiklov
         Button gumbSeznamArtiklov = findViewById(R.id.btnSeznamArtiklov);
         gumbSeznamArtiklov.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +65,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         //za gumb ki preusmeri na zemljevid
         Button gumbZemljevid = findViewById(R.id.btnZemljevid);
         gumbZemljevid.setOnClickListener(new View.OnClickListener() {
@@ -77,31 +76,16 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //****************************************
-
-
-
-
-
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-
         try {
-
             BitMatrix bitMatrix = multiFormatWriter.encode(Sifra, pretvoriFormat(encodeFormat(Koda)),100,100);
-
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-
             imgKoda.setImageBitmap(bitmap);
-
         } catch (WriterException e) {
-
             e.printStackTrace();
-
         }
-
     }
 
     @Override
