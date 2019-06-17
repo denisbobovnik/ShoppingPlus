@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.androidtutorialpoint.mymapsappsdirection.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -99,9 +101,6 @@
         </provider>
 
         <activity
-            android:name=".GoogleMapsSearch"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".PodrobnostiKarticeActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -111,8 +110,8 @@
             android:name=".ArtikliActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MapsActivity" android:screenOrientation="portrait"
-            android:label="@string/title_activity_maps" />
+            android:name=".MapsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

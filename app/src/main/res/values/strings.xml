@@ -103,7 +103,7 @@
     <string name="gumbSeznamArtiklov">Nakupovalni seznam</string>
     <string name="gumbZemljevid">Trgovine</string>
     <string name="kartice">Kartice</string>
-    <string name="map_key" translatable="false">AIzaSyDb6aP675ehmAJ3rF5KQKi-kU0-Axm9m98</string>
+    <string name="map_key" translatable="false">AIzaSyAzHUeTpH32LXxsaGDl6ZWfAdRmTcgBLWY</string>
     <string name="slika_kartice">Slika kartice</string>
     <!--**************************:-->
     <string name="seznamArtiklov">Seznam artiklov </string>
@@ -126,5 +126,6 @@
     <string name="naziv">Naziv:</string>
     <string name="koli_ina">Količina:</string>
     <string name="title_activity_maps">Map</string>
-
+    <string name="niGooglePlayStoritev">Storitve Google Play niso na voljo!</string>
+    <string name="osve_i">Osveži</string>
 </resources>

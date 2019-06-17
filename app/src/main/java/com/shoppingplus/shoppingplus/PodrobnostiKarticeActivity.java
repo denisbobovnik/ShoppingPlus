@@ -42,7 +42,7 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         String Slika = intent.getExtras().getString("Slika") ;
         String Koda = intent.getExtras().getString("Tip_sifre") ; //tip sifre
         String Sifra = intent.getExtras().getString("Sifra");
-        String naziv_trgovine = intent.getExtras().getString("naziv_trgovine");
+        final String naziv_trgovine = intent.getExtras().getString("naziv_trgovine");
         final String id_kartice = intent.getExtras().getString("id_kartice");
 
         // Setting values
@@ -72,8 +72,8 @@ public class PodrobnostiKarticeActivity extends AppCompatActivity {
         gumbZemljevid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //    Intent intent = new Intent(view.getContext(), GoogleMapsSearch.class);
                 Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                intent.putExtra("naziv_trgovine", naziv_trgovine);
                 startActivity(intent);
             }
         });
