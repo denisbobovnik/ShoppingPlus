@@ -2,6 +2,7 @@ package com.shoppingplus.shoppingplus;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
