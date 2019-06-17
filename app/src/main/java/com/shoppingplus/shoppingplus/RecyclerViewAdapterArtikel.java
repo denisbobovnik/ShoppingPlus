@@ -71,7 +71,7 @@ public class RecyclerViewAdapterArtikel extends RecyclerView.Adapter<RecyclerVie
                             }
                         });
 
-                odstraniArtikel(arrayArtikel.get(position));
+                odstraniArtikel(arrayArtikel.get(holder.getAdapterPosition()));
                 return true;
             }
         });

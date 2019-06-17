@@ -9,6 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -31,7 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
         final Kartica kartica = arrayKartica.get(position);
 
@@ -51,6 +57,40 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 mContext.startActivity(intent);
             }
         });
+
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                CollectionReference notesCollectionRef = db.collection("kartice");
+                notesCollectionRef.document(kartica.getId_kartice())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(mContext, "Kartica uspešno izbrisana! ", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(mContext, "Kartice ni bilo mogoče izbrisati! ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                odstraniKartico(arrayKartica.get(holder.getAdapterPosition()));
+                return true;
+            }
+        });
+    }
+
+
+    private void odstraniKartico(Kartica kartica){
+        int position = arrayKartica.indexOf(kartica);
+        arrayKartica.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override

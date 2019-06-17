@@ -97,7 +97,6 @@
     <string name="cardNotAdded">Napaka pri shranjevanju kartice!</string>
     <string name="validityCheck">Potrditev veljavnosti</string>
     <string name="validityDetails">Ali so vnešeni podatki pravilni?</string>
-    <!--PETRA DODALA***********:-->
     <string name="databaseTitleCard">Naslov</string>
     <string name="databaseSifraCard">Šifra</string>
     <string name="gumbSeznamArtiklov">Nakupovalni seznam</string>
@@ -105,7 +104,6 @@
     <string name="kartice">Kartice</string>
     <string name="map_key" translatable="false">AIzaSyAzHUeTpH32LXxsaGDl6ZWfAdRmTcgBLWY</string>
     <string name="slika_kartice">Slika kartice</string>
-    <!--**************************:-->
     <string name="seznamArtiklov">Seznam artiklov </string>
     <string name="dodajArtikel">Dopolni seznam:</string>
     <string name="gumbDodajArtikel">Dodaj nov artikel</string>
