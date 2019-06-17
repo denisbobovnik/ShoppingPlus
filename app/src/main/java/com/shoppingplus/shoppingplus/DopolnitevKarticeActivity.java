@@ -46,6 +46,7 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -149,6 +150,8 @@ public class DopolnitevKarticeActivity extends AppCompatActivity implements IPic
                             List<StaticnaTrgovina> trgovine = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult())
                                 trgovine.add(new StaticnaTrgovina((String) document.get("naziv_trgovine"), document.getString("url_slike")));
+
+                            Collections.sort(trgovine, StaticnaTrgovina.PO_NAZIVU_ASCENDING);
 
                             String[] imenaTrgovin = new String[trgovine.size()];
                             for(int i=0; i<trgovine.size(); i++)

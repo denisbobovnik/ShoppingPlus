@@ -1,5 +1,7 @@
 package com.shoppingplus.shoppingplus;
 
+import java.util.Comparator;
+
 public class StaticnaTrgovina {
 
     private String naziv_trgovine;
@@ -22,4 +24,11 @@ public class StaticnaTrgovina {
     public void setUrl_slike(String url_slike) {
         this.url_slike = url_slike;
     }
+
+    public static final Comparator<StaticnaTrgovina> PO_NAZIVU_ASCENDING = new Comparator<StaticnaTrgovina>() {
+        @Override
+        public int compare(StaticnaTrgovina o1, StaticnaTrgovina o2) {
+            return o1.getNaziv_trgovine().compareToIgnoreCase(o2.getNaziv_trgovine());
+        }
+    };
 }
