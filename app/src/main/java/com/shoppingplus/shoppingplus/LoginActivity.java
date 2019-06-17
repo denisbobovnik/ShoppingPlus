@@ -88,40 +88,36 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] MYpermissions, @NonNull int[] grantResults) {
         if(requestCode == MULTIPLE_PERMISSIONS_CODE) {
             if (grantResults.length > 0) {
                 String permissionsDenied = "";
-                for (String per : permissions) {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        String manjkajoceDovoljenje = "";
-                        switch (per) {
-                            case Manifest.permission.CAMERA:
-                                manjkajoceDovoljenje = getResources().getString(R.string.noCameraPermission);
-                                break;
-                            case Manifest.permission.ACCESS_FINE_LOCATION:
-                                manjkajoceDovoljenje = getResources().getString(R.string.noLocationPermission);
-                                break;
-                            case Manifest.permission.READ_EXTERNAL_STORAGE:
-                                manjkajoceDovoljenje = getResources().getString(R.string.noStoragePermission);
-                                break;
-                        }
-                        Toast.makeText(this, manjkajoceDovoljenje, Toast.LENGTH_SHORT).show();
-                    } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        String pridobljenoDovoljenje = "";
-                        switch (per) {
-                            case Manifest.permission.CAMERA:
-                                pridobljenoDovoljenje = getResources().getString(R.string.cameraPermissionGranted);
-                                break;
-                            case Manifest.permission.ACCESS_FINE_LOCATION:
-                                pridobljenoDovoljenje = getResources().getString(R.string.locationPermissionGranted);
-                                break;
-                            case Manifest.permission.READ_EXTERNAL_STORAGE:
-                                pridobljenoDovoljenje = getResources().getString(R.string.storagePermissionGranted);
-                                break;
-                        }
-                        Toast.makeText(this, pridobljenoDovoljenje, Toast.LENGTH_SHORT).show();
+                for (int i=0; i<MYpermissions.length; i++) {
+                    String outputText = "";
+                    switch (MYpermissions[i]) {
+                        case Manifest.permission.CAMERA:
+                            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                                outputText = getResources().getString(R.string.noCameraPermission);
+                            } else {
+                                outputText = getResources().getString(R.string.cameraPermissionGranted);
+                            }
+                            break;
+                        case Manifest.permission.ACCESS_FINE_LOCATION:
+                            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                                outputText = getResources().getString(R.string.noLocationPermission);
+                            } else {
+                                outputText = getResources().getString(R.string.locationPermissionGranted);
+                            }
+                            break;
+                        case Manifest.permission.READ_EXTERNAL_STORAGE:
+                            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                                outputText = getResources().getString(R.string.noStoragePermission);
+                            } else {
+                                outputText = getResources().getString(R.string.storagePermissionGranted);
+                            }
+                            break;
                     }
+                    Toast.makeText(this, outputText, Toast.LENGTH_SHORT).show();
                 }
             }
         }
