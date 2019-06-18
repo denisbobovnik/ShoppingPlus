@@ -19,19 +19,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/rvKolicinaArtikla"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:textAlignment="center"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/rvNazivArtikla"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:padding="11dp"
-                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/rvKolicinaArtikla"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:textAlignment="viewEnd"
                 android:textSize="18sp" />
 
             <TextView

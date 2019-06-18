@@ -39,23 +39,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20sp"
-                android:layout_width="wrap_content"
-                android:text="@string/koli_ina"
-                android:textSize="19sp" />
 
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40sp"
+                android:layout_marginStart="20sp"
                 android:text="@string/naziv"
                 android:layout_width="wrap_content"
                 android:textSize="19sp" />
 
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="70sp"
+                    android:layout_width="wrap_content"
+                    android:text="@string/koli_ina"
+                    android:textSize="19sp" />
+
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50sp"
+                android:layout_marginStart="20sp"
                 android:text="@string/opis"
                 android:textSize="19sp"
                 android:layout_width="wrap_content" />
