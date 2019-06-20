@@ -1,4 +1,4 @@
-# ![logo](/blob/master/app/src/main/res/drawable/logo.png)
+# ![logo](/app/src/main/res/drawable/logo.png)
 Projekt pri predmetu RVIR (Razvoj Vseprisotnih Informacijskih Rešitev)
 
 Pri STATIČNIH TRGOVINAH je potrebno paziti, da je slika 850 x 540 px s 96 kvaliteto in formata .png (manjša od 1mb)
